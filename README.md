@@ -1,8 +1,8 @@
 ## PROGRAMA DE AUTOMACAO COM INTERFACE
 
-● Leitura e tratamento de dados de arquivos PDF e TXT transformando em Excel;
-● Converter arquivos Excel para PRN de acordo com algumas regras;
-● Criado um programa com interface;
+● Leitura e tratamento de dados de arquivos PDF e TXT transformando em Excel;<br>
+● Converter arquivos Excel para PRN de acordo com algumas regras;<br>
+● Criado um programa com interface;<br>
 
 ### Area para selecionar pasta de notas e transformar
 ![IAMGEM PRINCIPAL NOTAS](https://github.com/AlexandreSilvestrin/Programa-automacao/blob/main/img_programa/PrincipalNotas.jpeg)
