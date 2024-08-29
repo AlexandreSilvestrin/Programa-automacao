@@ -12,13 +12,15 @@ class PRN:
         caminho = self.caminho
         if os.path.isfile(caminho):
             nome = os.path.splitext(os.path.basename(caminho))[0]
-            self.transformar(self.caminho, nome, self.salvar)
+            return self.transformar(self.caminho, nome, self.salvar)
         elif os.path.isdir(caminho):
             for arquivo in os.listdir(caminho):
                 caminho_completo = os.path.join(caminho, arquivo)
                 if arquivo.endswith('.xlsx'):
                     arq = os.path.splitext(arquivo)[0]
                     self.transformar(caminho_completo, arq, self.salvar)
+            else:
+                return True
         else:
             self.printarInformacoes("O caminho fornecido não é válido.")
 
@@ -200,25 +202,26 @@ class PRN:
             df = df.fillna('')
             novacoluna = 'novacoluna'
             num = 1
-            while len(df.columns) < 15:
+            while len(df.columns) < 18:
                 df[f'{novacoluna} {num}'] = ''
                 num+=1
 
 
-            df.columns = ['campo1','codigo debito', 'codigo credito', 'codigo historico', 'valor', 'data', 'campo8' , 'nome', 'campo10', 'campo11', 'centro', 'valor1', 'centroC', 'valorC', 'letra']
+            df.columns = ['campo1','codigo debito', 'codigo credito', 'codigo historico', 'valor', 'data', 'campo8' , 'nome', 'campo10', 'campo11', 'centro', 'valor1', 'centroC', 'valorC', 'letra', 'nada', 'nada2', 'nada3']
             df['data'] = df['data'].apply(lambda x: '' if pd.isnull(x) else x)
             texto = ''
 
             for indice, linha in df.iterrows():
                 lista_da_linha = linha.values.tolist()
-                campoo1, codigo_debito, codigo_credito, codigo_historico, valor, data, campoo8 , nome, campoo10, campoo11, centroD, valorD, centroC, valorC , letra= lista_da_linha
+                campoo1, codigo_debito, codigo_credito, codigo_historico, valor, data, campoo8 , nome, campoo10, campoo11, centroD, valorD, centroC, valorC , letra, nada, nada2, nada3= lista_da_linha
                 texto = texto+f'{campo01(campoo1)}{campo02(codigo_debito)}{campo03(codigo_credito)}{campo04(codigo_historico)}{campo05()}{campo06(valor)}{campo07(data)}{campo08()}{campo09(nome)}{campo10(campoo10)}{campo11(campoo11)}{campo12(centroD)}{campo13(valorD)}{campo14(centroC)}{campo15(valorC)}{campo16(letra)}{campo17()}{campo18()}\n'
 
 
             with open(f'{salvar}/{nomearq}.prn', 'w') as arq:
-                arq.write(texto)   
+                arq.write(texto)
             
             self.printarInformacoes(f'NOME: {nomearq}.prn GERADO')
+            return True
         except Exception as e:
             self.printarInformacoes(f'NOME: {nomearq}.prn ## OUVE UM ERRO NESSE ARQUIVO ## {e}')
 
@@ -229,9 +232,3 @@ class PRNui(PRN):
 
     def printarInformacoes(self, conteudo):
         self.ui.printPRN(conteudo)
-
-
-
-if __name__ == "__main__": 
-    prn = PRN(r"C:\Users\Alexandre\Downloads\Faturamento Com CC 03-2024 - Correta (1).xlsx", r"C:\Users\Alexandre\Desktop\Nova pasta")
-    prn.verificar()

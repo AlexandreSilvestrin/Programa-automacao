@@ -1,12 +1,42 @@
+import logging
 import sys
-import traceback
 import pandas as pd
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import *
 import os
+
+# Configurar o logger
+logging.basicConfig(filename='program_log.txt', 
+                    level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Redirecionar stdout e stderr para o logger
+class StreamToLogger(object):
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
+
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
+
+    def flush(self):
+        pass
+
+sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
+sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
+
+def excepthook(type, value, traceback):
+    logging.error("Unhandled exception", exc_info=(type, value, traceback))
+    QMessageBox.critical(None, "Erro", f"Ocorreu um erro não tratado: {value}")
+    sys.__excepthook__(type, value, traceback)
+
+# Configura o manipulador global de exceções
+sys.excepthook = excepthook
+
 from funcoes.transformarPRN2 import PRNui
 from funcoes.NOTAS import NotasUI, PesquisaAPIThread
-
 
 class JanelaPrincipal(QMainWindow):
     def __init__(self):
@@ -51,25 +81,24 @@ class JanelaPrincipal(QMainWindow):
     def verificarCampos(self):
         localNotas = self.localNotas.text()
         localNotasSalvar = self.localNotasSalvar.text()
-        txtTomados = self.txtTomados.text()
-        txtEntrada = self.txtEntrada.text()
+        mes = self.txtmes.currentText()
+        ano = self.txtano.currentText()
+        txtTomados = f'I56{mes}{ano}.txt'
+        txtEntrada = f'E{mes}{ano}.txt'
 
-        if os.path.exists(localNotas) and os.path.exists(localNotasSalvar) and txtTomados.strip() != '' and txtEntrada.strip() != '':
-            print('sim')
+        if os.path.exists(localNotas) and os.path.exists(localNotasSalvar) and mes.strip() != '' and ano.strip() != '':
             return True, localNotas,  localNotasSalvar, txtTomados, txtEntrada
         else:
-            print('nao')
             return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada
 
     def transformarNotas(self):
         try:
             verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada = self.verificarCampos()
-            print('aq')
             if verificacao:
                 Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
                 Cnotas.gerarNotas()
             else:
-                QMessageBox.critical(self, "Erro", "O caminho do arquivo não é válido ou não existe.")
+                QMessageBox.critical(self, "Erro", "Preencha todos os campos")
         except Exception as e: 
             print(e)
 
@@ -150,16 +179,17 @@ class JanelaPrincipal(QMainWindow):
             localarq = self.textoPRNarq.text()
             localsalvar = self.textoPRNlocal.text()
             prn = PRNui(localarq, localsalvar, self)
-            prn.verificar()
-            conteudoo = self.txtinfoPRN.toPlainText()
-            self.txtinfoPRN.setText(f'{conteudoo} \n FINALIZADO, arquivo(s) salvo(s)')
-            self.btnAbrPasta.setVisible(True)
+            if prn.verificar():
+                conteudoo = self.txtinfoPRN.toPlainText()
+                self.txtinfoPRN.setText(f'{conteudoo} \n FINALIZADO, arquivo(s) salvo(s)')
+                self.btnAbrPasta.setVisible(True)
+            else:
+                pass
         except Exception as e:
             self.txtinfoPRN.setText(f'{conteudoo} \n {e}\n OUVE UM ERRO ao transformar')
 
     def abrir_segunda_janela(self):
         verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada = self.verificarCampos()
-        print('aq')
         if verificacao:
             Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
             self.segunda_janela = SegundaJanela(Cnotas)
@@ -170,7 +200,6 @@ class JanelaPrincipal(QMainWindow):
     def exportarbanco(self):
         options = QFileDialog.Options()
         folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
-        print(folder_path)
         if folder_path == '':
             pass
         else:
@@ -289,7 +318,6 @@ class SegundaJanela(QMainWindow):
             for j, value in enumerate(row):
                 item = QTableWidgetItem(str(value))
                 self.tableWidget.setItem(i, j, item)
-
 
 
 if __name__ == "__main__":

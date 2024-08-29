@@ -56,9 +56,11 @@ class Notas:
             caminhos = [pasta, file_path_tomados, file_path_entrada, file_path_pdf]
 
             lista_caminhos.append(caminhos)
+        print('lista caminhos', lista_caminhos)
         return lista_caminhos
 
     def lertomadostxt(self, caminhoT):
+        print(f'tomados {caminhoT}')
         def organizerdf(df1, df2):
             for indice, linha in df2.iterrows():
                 numero_correspondente = linha['Número']
@@ -86,6 +88,10 @@ class Notas:
             if re.search(padrao_regex, linha):
                 linhas_selecionadas.append(linha)
 
+        if not linhas_selecionadas:
+            dadosF = pd.DataFrame(columns=['Data', 'Número', 'Valor', 'CNPJ/CPF', 'Tipo'])
+            return dadosF, empresa.replace(':', '').replace('empresa', '').strip()
+        
         linhas_selecionadas =  '\n'.join(linhas_selecionadas)
         dados_io = StringIO(linhas_selecionadas)
         dadosF = pd.read_csv(dados_io, sep='|', header=None, dtype=str)
@@ -134,6 +140,7 @@ class Notas:
         return dadosF
 
     def lerpdf(self, caminho):
+        print('pdf', caminho)
         def verifica_tipo_pdf():
             with open(caminho, 'rb') as file:
                 reader = PyPDF2.PdfReader(file)
@@ -199,7 +206,8 @@ class Notas:
             df_list = tabula.read_pdf(caminho, pages=1, area=area,lattice=True)
 
             tabela = pd.concat(df_list, ignore_index=True)
-
+            
+            print(tabela)
             tabela.columns = ['Data', 'nada', 'Número', 'CNPJ/CPF', 'nada', 'nadaa', 'asdf', 'PIS', 'COFINS', 'CSLL' ,'IRRF', 'INSS']
             tabela = tabela[['Data', 'Número', 'CNPJ/CPF', 'PIS', 'COFINS', 'CSLL' ,'IRRF', 'INSS']]
             tabela = tabela.replace(r'\r', ' ', regex=True)
