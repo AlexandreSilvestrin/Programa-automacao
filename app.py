@@ -43,7 +43,9 @@ class JanelaPrincipal(QMainWindow):
         super().__init__()
         uic.loadUi("interface/mainW.ui", self)
         self.configurarUI()
-    
+        self.setFixedSize(self.size())
+
+
     def configurarUI(self):
         self.textoPRNarq.setReadOnly(True)
         self.textoPRNlocal.setReadOnly(True)
@@ -228,6 +230,7 @@ class SegundaJanela(QMainWindow):
         self.btnPARAR.clicked.connect(self.pararAPI)
         self.salvo = True
         self.btn_salvar_banco.setVisible(False) 
+        self.setFixedSize(self.size())
 
     def closeEvent(self, event):
         if self.salvo:
