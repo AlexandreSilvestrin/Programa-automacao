@@ -54,7 +54,7 @@
      <string notr="true">background-color: rgb(52, 53, 65);</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label_5">
@@ -74,30 +74,7 @@ color: rgb(209, 209, 209);
 </string>
       </property>
       <property name="text">
-       <string>PROGRAMA DE AUTOMACAO</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_13">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>170</y>
-        <width>361</width>
-        <height>121</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-radius: 15px;
-font: 87 12pt &quot;Arial Black&quot;;
-border-style: outset;
-color: rgb(209, 209, 209);
-</string>
-      </property>
-      <property name="text">
-       <string>AINDA EM TESTE</string>
+       <string>PROGRAMA DE AUTOMACAO V1.3</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

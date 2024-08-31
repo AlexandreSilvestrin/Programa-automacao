@@ -1,9 +1,9 @@
 import logging
 import sys
-import pandas as pd
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import *
 import os
+import threading
 
 # Configurar o logger
 logging.basicConfig(filename='program_log.txt', 
@@ -35,8 +35,12 @@ def excepthook(type, value, traceback):
 # Configura o manipulador global de exceções
 sys.excepthook = excepthook
 
-from funcoes.transformarPRN2 import PRNui
-from funcoes.NOTAS import NotasUI, PesquisaAPIThread
+# Função para carregar as dependências pesadas
+def carregar_dependencias():
+    global PRNui, NotasUI, PesquisaAPIThread, exportar_db
+    from funcoes.transformarPRN2 import PRNui
+    from funcoes.NOTAS import NotasUI, PesquisaAPIThread, exportar_db
+
 
 class JanelaPrincipal(QMainWindow):
     def __init__(self):
@@ -205,10 +209,7 @@ class JanelaPrincipal(QMainWindow):
         if folder_path == '':
             pass
         else:
-            dfbanco = pd.read_excel('BANCOCNPJ.xlsx')
-            dfbanco.columns = ('CNPJ/CPF', 'Nome')
-            dfbanco['CNPJ/CPF'] = dfbanco['CNPJ/CPF'].apply(lambda x: str(x).zfill(14))
-            dfbanco.to_excel(f'{folder_path}/BANCOCNPJ.xlsx', index=False)
+            exportar_db(folder_path)
             QMessageBox.information(self, "SALVO", f"Banco de dados salvo em: \n {folder_path}")
 
 class SegundaJanela(QMainWindow):
@@ -324,7 +325,19 @@ class SegundaJanela(QMainWindow):
 
 
 if __name__ == "__main__":
+    # Inicializa a aplicação Qt
     app = QApplication([])
+
+    # Cria e mostra a janela principal
     window = JanelaPrincipal()
     window.show()
+
+    # Inicia o carregamento das dependências em segundo plano
+    thread = threading.Thread(target=carregar_dependencias)
+    thread.start()
+
+    # Continua a execução da aplicação Qt
     app.exec_()
+
+    # Espera a thread terminar antes de fechar o programa (opcional)
+    thread.join()

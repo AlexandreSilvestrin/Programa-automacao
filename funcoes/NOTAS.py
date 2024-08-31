@@ -14,6 +14,13 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 warnings.filterwarnings("ignore", category=FutureWarning, message="errors='ignore' is deprecated")
 
+def exportar_db(folder_path):
+    dfbanco = pd.read_excel('BANCOCNPJ.xlsx')
+    dfbanco.columns = ('CNPJ/CPF', 'Nome')
+    dfbanco['CNPJ/CPF'] = dfbanco['CNPJ/CPF'].apply(lambda x: str(x).zfill(14))
+    dfbanco.to_excel(f'{folder_path}/BANCOCNPJ.xlsx', index=False)
+
+
 class Notas:
     def __init__(self, local, local_salvar, txt_tomados, txt_entrada):
         self.local = local
@@ -285,6 +292,7 @@ class Notas:
         dfbanco['CNPJ/CPF'] = dfbanco['CNPJ/CPF'].apply(lambda x: str(x).zfill(14))
         mapa_cnpj_nome = dict(zip(dfbanco['CNPJ/CPF'], dfbanco['Nome']))
         return mapa_cnpj_nome
+
 
     def alterarnome(self, df1):
         df1['NF Nome'] = 'NF '+ df1['Número'].fillna('').astype(str) + ' ' + df1['Nome'].fillna('')
