@@ -416,10 +416,10 @@ class Notas:
                 self.salvar_junto(dftomados[['Data', 'Número', 'CNPJ/CPF' , 'Vazia1', 'Vazia2','Valor', 'NF Nome', 'Tipo']], self.local_salvar)
                 self.salvar_em_excel(dftomados[[ 'Valor', 'Data', 'NF Nome', 'CNPJ/CPF']], f'{empresa}.xlsx', self.local_salvar)
                 self.pradronizarxl(self.local_salvar)
-                self.printarInformacoes('################################################')
+                self.printarInformacoes('#'*62)
             else:
                 continue
-        self.printarInformacoes('############### COMPLETOU NOTAS ###################')
+        self.printarInformacoes(f'completou')
 
 class NotasUI(Notas):
     def __init__(self, local, local_salvar, txt_tomados, txt_entrada, ui):

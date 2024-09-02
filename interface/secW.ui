@@ -6,19 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1077</width>
+    <width>1078</width>
     <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color:black;
+
+</string>
+  </property>
   <widget class="QWidget" name="widget">
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>-5</x>
-      <y>1</y>
+      <x>0</x>
+      <y>0</y>
       <width>771</width>
       <height>611</height>
      </rect>
@@ -36,7 +41,8 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTableWidget::item { min-width: 50px; }</string>
+     <string notr="true">QTableWidget::item { min-width: 50px; }
+</string>
     </property>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>45</number>
@@ -59,6 +65,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
+color:black;
 border-radius: 15px;
 border-width:2px;
 border-style:outset;
@@ -76,7 +83,7 @@ font-size: 25px;
 }</string>
     </property>
     <property name="text">
-     <string>SALVAR BANCO</string>
+     <string>ATUALIZAR BANCO</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnSalvarCNPJS">
@@ -90,6 +97,7 @@ font-size: 25px;
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
+color:black;
 border-radius: 15px;
 border-width:2px;
 border-style:outset;
@@ -107,7 +115,7 @@ font-size: 25px;
 }</string>
     </property>
     <property name="text">
-     <string>SALVAR SOZINHO</string>
+     <string>SALVAR PESQUISA</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnPesqAPI">
@@ -121,6 +129,7 @@ font-size: 25px;
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
+color:black;
 border-radius: 15px;
 border-width:2px;
 border-style:outset;
@@ -155,6 +164,9 @@ font-size: 25px;
       <pointsize>11</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -172,6 +184,9 @@ font-size: 25px;
      <font>
       <pointsize>11</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -191,6 +206,9 @@ font-size: 25px;
       <pointsize>11</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>ATUALIZAÇÃO A CADA 60 SEGUNDOS</string>
     </property>
@@ -209,6 +227,7 @@ font-size: 25px;
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
+color:black;
 border-radius: 15px;
 border-width:2px;
 border-style:outset;

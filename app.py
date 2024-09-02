@@ -1,9 +1,32 @@
 import logging
 import sys
-from PyQt5 import uic, QtCore
+from PyQt5 import uic
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 import os
 import threading
+from PyQt5.QtCore import QSharedMemory
+
+def check_single_instance():
+    # Nome único para o segmento de memória compartilhada
+    shared_mem = QSharedMemory("XY-auto")
+
+    # Tenta anexar à memória compartilhada existente
+    if shared_mem.attach():
+        # A memória compartilhada já existe, o que significa que outra instância está em execução
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Aviso")
+        msg.setText("O programa já está em execução.")
+        msg.exec_()
+
+        sys.exit(0)  # Encerra a nova instância do programa
+    else:
+        # Cria a memória compartilhada, indicando que esta é a primeira instância
+        shared_mem.create(1)
+
+    return shared_mem
 
 # Configurar o logger
 logging.basicConfig(filename='program_log.txt', 
@@ -48,7 +71,8 @@ class JanelaPrincipal(QMainWindow):
         uic.loadUi("interface/mainW.ui", self)
         self.configurarUI()
         self.setFixedSize(self.size())
-
+        self.setWindowTitle("XY-auto")
+        self.setWindowIcon(QIcon("icon/XY.ico"))
 
     def configurarUI(self):
         self.textoPRNarq.setReadOnly(True)
@@ -58,6 +82,9 @@ class JanelaPrincipal(QMainWindow):
         self.btnVoltar.setVisible(False)
 
         ### configurar FUNCOES DAS NOTAS
+
+        self.localNotas.setReadOnly(True)
+        self.localNotasSalvar.setReadOnly(True)
 
         self.btnNotas.clicked.connect(lambda: self.mostrar_pagina(1))
         self.btnNotaarq.clicked.connect(self.localizararqN)
@@ -109,8 +136,11 @@ class JanelaPrincipal(QMainWindow):
             print(e)
 
     def printNotas(self, conteudo):
+        if 'completou' == conteudo:
+            QMessageBox.information(self, "NOTAS", "Notas finalizadas")
+            self.btnAbrPastaNota.setVisible(True)
         if 'LIMPAR' == conteudo:
-            self.txtinfoNota.setText(f'##############')
+            self.txtinfoNota.setText('#'*62)
         else:
             conteudoo = self.txtinfoNota.toPlainText()
             self.txtinfoNota.setText(f'{conteudo}\n{conteudoo}')
@@ -118,7 +148,7 @@ class JanelaPrincipal(QMainWindow):
 
     def printPRN(self, conteudo):
         if 'LIMPAR' == conteudo:
-            self.txtinfoPRN.setText(f'##############')
+            self.txtinfoPRN.setText('#'*62)
         else:
             conteudoo = self.txtinfoPRN.toPlainText()
             self.txtinfoPRN.setText(f'{conteudo}\n{conteudoo}')
@@ -199,7 +229,6 @@ class JanelaPrincipal(QMainWindow):
         if verificacao:
             Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
             self.segunda_janela = SegundaJanela(Cnotas)
-            self.segunda_janela.show()
         else:
             QMessageBox.critical(self, "Erro", "O caminho do arquivo não é válido ou não existe.")
 
@@ -216,25 +245,46 @@ class SegundaJanela(QMainWindow):
     def __init__(self, Cnotas):
         super().__init__()
         uic.loadUi("interface/secW.ui", self)
-        self.setWindowTitle("Segunda Janela")
-        self.Cnotas = Cnotas
-        self.df = self.Cnotas.pegarCNPJS()
-        self.preencher_tabela(self.df)
-        self.btnPesqAPI.clicked.connect(self.iniciar_pesquisa)
-        # Preencher a tabela com os dados iniciais
-        self.thread = PesquisaAPIThread()
-        self.thread.resultado_encontrado.connect(self.atualizar)
-        self.btnSalvarCNPJS.clicked.connect(self.salvarCNPJS)
-        self.tableWidget.setColumnWidth(1, 550)
-        self.tableWidget.setColumnWidth(0, 150)
-        self.btn_salvar_banco.clicked.connect(self.juntarCNPJSbanco)
-        self.btnPARAR.clicked.connect(self.pararAPI)
-        self.salvo = True
-        self.btn_salvar_banco.setVisible(False) 
-        self.setFixedSize(self.size())
+        self.setWindowTitle("BUSCAR CNPJS")
+        self.setWindowIcon(QIcon("icon/XY.ico"))
 
+        self.setWindowModality(Qt.ApplicationModal)
+
+        self.Cnotas = Cnotas
+        self.df = self.verificarDF()
+        self.salvo = True
+        
+        if self.df is None:
+            self.close()
+        else:
+            self.preencher_tabela(self.df)
+            self.btnPesqAPI.clicked.connect(self.iniciar_pesquisa)
+            # Preencher a tabela com os dados iniciais
+            self.thread = PesquisaAPIThread()
+            self.thread.resultado_encontrado.connect(self.atualizar)
+            self.btnSalvarCNPJS.clicked.connect(self.salvarCNPJS)
+            self.tableWidget.setColumnWidth(1, 550)
+            self.tableWidget.setColumnWidth(0, 150)
+            self.btn_salvar_banco.clicked.connect(self.juntarCNPJSbanco)
+            self.btnPARAR.clicked.connect(self.pararAPI)
+            
+            self.btn_salvar_banco.setVisible(False) 
+            self.setFixedSize(self.size())
+            self.show()
+
+    def verificarDF(self):
+        df = self.Cnotas.pegarCNPJS()
+        if df.empty:
+            QMessageBox.information(self, "SEM DADOS", "Nao tem CNPJS para pesquisar")
+            return None
+        else:
+            QMessageBox.information(self, "", "Temos alguns CNPJS para pesquisar")
+            return df
+        
     def closeEvent(self, event):
-        if self.salvo:
+        if self.df is None:
+            event.accept()
+        elif self.salvo:
             self.thread.terminate()  # Encerrando a thread ao fechar a janela
             event.accept()  
         else:
@@ -328,6 +378,7 @@ if __name__ == "__main__":
     # Inicializa a aplicação Qt
     app = QApplication([])
 
+    shared_mem = check_single_instance()
     # Cria e mostra a janela principal
     window = JanelaPrincipal()
     window.show()
