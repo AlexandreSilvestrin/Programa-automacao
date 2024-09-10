@@ -241,11 +241,11 @@ border-width:2px;
 border-style:outset;
 border-color:black;
 background-color:rgb(112, 169, 255);
-font-size: 25px;
+font-size: 22px;
 }</string>
     </property>
     <property name="text">
-     <string>PARAR</string>
+     <string>FINALIZAR/INTERROMPER</string>
     </property>
    </widget>
   </widget>

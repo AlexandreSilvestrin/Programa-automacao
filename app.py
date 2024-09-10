@@ -60,9 +60,10 @@ sys.excepthook = excepthook
 
 # Função para carregar as dependências pesadas
 def carregar_dependencias():
-    global PRNui, NotasUI, PesquisaAPIThread, exportar_db
+    global PRNui, NotasUI, PesquisaAPIThread, exportar_db, FaturamentoUI
     from funcoes.transformarPRN2 import PRNui
     from funcoes.NOTAS import NotasUI, PesquisaAPIThread, exportar_db
+    from funcoes.FATURAMENTO import FaturamentoUI
 
 
 class JanelaPrincipal(QMainWindow):
@@ -117,22 +118,26 @@ class JanelaPrincipal(QMainWindow):
         mes = self.txtmes.currentText()
         ano = self.txtano.currentText()
         txtTomados = f'I56{mes}{ano}.txt'
+        txtPrestados = f'I51{mes}{ano}.txt'
         txtEntrada = f'E{mes}{ano}.txt'
 
         if os.path.exists(localNotas) and os.path.exists(localNotasSalvar) and mes.strip() != '' and ano.strip() != '':
-            return True, localNotas,  localNotasSalvar, txtTomados, txtEntrada
+            return True, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
         else:
-            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada
+            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
 
     def transformarNotas(self):
         try:
-            verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada = self.verificarCampos()
+            verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
             if verificacao:
                 Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
                 Cnotas.gerarNotas()
+                Cfat = FaturamentoUI(localNotas, localNotasSalvar, txtPrestados, self)
+                Cfat.gerarFat()
             else:
                 QMessageBox.critical(self, "Erro", "Preencha todos os campos")
-        except Exception as e: 
+        except Exception as e:
+            QMessageBox.critical(self, "Erro", f"Preencha todos os campos: {e}")
             print(e)
 
     def printNotas(self, conteudo):

@@ -62,7 +62,7 @@
 }</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label_5">
@@ -116,7 +116,7 @@ color: rgb(209, 209, 209);
 </string>
       </property>
       <property name="text">
-       <string>LER NOTAS</string>
+       <string>NOTAS+FATURAMENTO</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -957,7 +957,7 @@ font-size: 25px;
 }</string>
     </property>
     <property name="text">
-     <string>NOTAS</string>
+     <string>NOTAS+FAT</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnPRN">

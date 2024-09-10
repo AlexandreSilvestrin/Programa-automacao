@@ -40,11 +40,11 @@ class Notas:
 
     def criar_pasta(self):
         ultimo_diretorio = os.path.basename(self.local)
-        os.makedirs(f'{self.local_salvar}/{ultimo_diretorio}', exist_ok=True)
-        if not os.path.exists(f'{self.local_salvar}/{ultimo_diretorio}/TUDO.xlsx'):
+        os.makedirs(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS', exist_ok=True)
+        if not os.path.exists(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx'):
             teste = pd.DataFrame(columns=['Data', 'Número', 'CNPJ/CPF' , 'Vazia1', 'Vazia2','Valor', 'NF Nome', 'Tipo'])
-            teste.to_excel(f'{self.local_salvar}/{ultimo_diretorio}/TUDO.xlsx', index=False)
-        self.local_salvar = f'{self.local_salvar}/{ultimo_diretorio}'
+            teste.to_excel(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx', index=False)
+        self.local_salvar = f'{self.local_salvar}/{ultimo_diretorio}/NOTAS'
 
     def listarcaminhos(self, base_directory, txtentrada, txttomados):
         substrings = ['retencoes', 'retencao', 'Retençao', 'Retenção']
