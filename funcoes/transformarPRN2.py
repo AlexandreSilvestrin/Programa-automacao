@@ -198,13 +198,11 @@ class PRN:
             return f'{quant*' '}{valor}'
 
         try:
-            df = pd.read_excel(arquivo, header=None)
+            df = pd.read_excel(arquivo, header=None, usecols="A:R")
             df = df.fillna('')
             novacoluna = 'novacoluna'
-            num = 1
-            while len(df.columns) < 18:
-                df[f'{novacoluna} {num}'] = ''
-                num+=1
+            for i in range(df.shape[1], 18):
+                df[f'Coluna {i+1}'] = None  # ou outro valor padrão como 0 ou ""
 
 
             df.columns = ['campo1','codigo debito', 'codigo credito', 'codigo historico', 'valor', 'data', 'campo8' , 'nome', 'campo10', 'campo11', 'centro', 'valor1', 'centroC', 'valorC', 'letra', 'nada', 'nada2', 'nada3']

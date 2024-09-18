@@ -19,11 +19,11 @@ class Faturamento:
     def printarInformacoes(self, conteudo):
         print(conteudo)
 
-    def encontrar_arquivo(self, caminho, txtPrestados, nome_pasta='Serv. Prestados'):
+    def encontrar_arquivo(self, caminho, txtPrestados, nome_pasta='prestados'):
         caminhosFat = []
         for dirpath, dirnames, filenames in os.walk(caminho):
             # Verifica se a pasta "Serv. Prestados" está no caminho atual
-            if nome_pasta in dirpath:
+            if nome_pasta in dirpath.lower():
                 # Verifica se o arquivo desejado está dentro da pasta
                 if txtPrestados in filenames:
                     # Retorna o caminho completo do arquivo
@@ -200,6 +200,7 @@ class Faturamento:
     def gerarFat(self):
         self.criar_pasta()
         for caminho in self.caminhosFat:
+            print(caminho)
             self.faturamento(caminho)
         self.printarInformacoes('FATURAMENTO COMPLETO')
 
