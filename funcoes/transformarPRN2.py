@@ -198,12 +198,15 @@ class PRN:
             return f'{quant*' '}{valor}'
 
         try:
-            df = pd.read_excel(arquivo, header=None, usecols="A:R")
+            df = pd.read_excel(arquivo, header=None)
             df = df.fillna('')
-            novacoluna = 'novacoluna'
-            for i in range(df.shape[1], 18):
-                df[f'Coluna {i+1}'] = None  # ou outro valor padrão como 0 ou ""
+            print(df.shape)
 
+            if df.shape[1] < 18:
+                for i in range(df.shape[1], 18):
+                    df[i] = ''
+
+            df = df.reindex(columns=range(18))
 
             df.columns = ['campo1','codigo debito', 'codigo credito', 'codigo historico', 'valor', 'data', 'campo8' , 'nome', 'campo10', 'campo11', 'centro', 'valor1', 'centroC', 'valorC', 'letra', 'nada', 'nada2', 'nada3']
             df['data'] = df['data'].apply(lambda x: '' if pd.isnull(x) else x)
@@ -230,3 +233,8 @@ class PRNui(PRN):
 
     def printarInformacoes(self, conteudo):
         self.ui.printPRN(conteudo)
+
+
+if __name__ == "__main__": 
+    prn = PRN(r"C:\Users\Alexandre\Downloads\Fornecedores Com CC 08-2024.xlsx", r"C:\Users\Alexandre\Downloads")
+    prn.verificar()

@@ -52,6 +52,7 @@ sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
 
 def excepthook(type, value, traceback):
     logging.error("Unhandled exception", exc_info=(type, value, traceback))
+    print(traceback)
     QMessageBox.critical(None, "Erro", f"Ocorreu um erro não tratado: {value}")
     sys.__excepthook__(type, value, traceback)
 
@@ -230,7 +231,7 @@ class JanelaPrincipal(QMainWindow):
             self.txtinfoPRN.setText(f'{conteudoo} \n {e}\n OUVE UM ERRO ao transformar')
 
     def abrir_segunda_janela(self):
-        verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada = self.verificarCampos()
+        verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
         if verificacao:
             Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
             self.segunda_janela = SegundaJanela(Cnotas)
