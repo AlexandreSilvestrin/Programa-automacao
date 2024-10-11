@@ -62,7 +62,7 @@
 }</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label_5">
@@ -126,7 +126,7 @@ color: rgb(209, 209, 209);
       <property name="geometry">
        <rect>
         <x>800</x>
-        <y>760</y>
+        <y>710</y>
         <width>201</width>
         <height>41</height>
        </rect>
@@ -150,7 +150,7 @@ font-size: 23px;
 }</string>
       </property>
       <property name="text">
-       <string>TRANSFORMAR</string>
+       <string>GERAR NOTAS</string>
       </property>
      </widget>
      <widget class="QPushButton" name="btnNotaarq">
@@ -295,7 +295,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>800</x>
-        <y>710</y>
+        <y>660</y>
         <width>201</width>
         <height>41</height>
        </rect>
@@ -621,6 +621,42 @@ font-size: 23px;
         <string>2030</string>
        </property>
       </item>
+     </widget>
+     <widget class="QPushButton" name="btnFATtransformar">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>760</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+border-radius: 15px;
+border-width:2px;
+border-style:outset;
+border-color:black;
+	background-color: rgb(7, 0, 235);
+font-size: 18px;
+}
+QPushButton:hover{
+border-radius: 15px;
+border-width:2px;
+border-style:outset;
+border-color:black;
+	background-color: rgb(87, 255, 92);
+font-size: 20px;
+}</string>
+      </property>
+      <property name="text">
+       <string>GERAR FATURAMENTO</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="pagPRN">

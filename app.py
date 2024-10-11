@@ -92,6 +92,7 @@ class JanelaPrincipal(QMainWindow):
         self.btnNotaarq.clicked.connect(self.localizararqN)
         self.btnNotalocal.clicked.connect(self.localizarlocalN)
         self.btnNotatransformar.clicked.connect(self.transformarNotas)
+        self.btnFATtransformar.clicked.connect(self.transformarFAT)
         self.btnCNPJ.clicked.connect(self.abrir_segunda_janela)
         self.btn_exportar.clicked.connect(self.exportarbanco)
 
@@ -133,6 +134,16 @@ class JanelaPrincipal(QMainWindow):
             if verificacao:
                 Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
                 Cnotas.gerarNotas()
+            else:
+                QMessageBox.critical(self, "Erro", "Preencha todos os campos")
+        except Exception as e:
+            QMessageBox.critical(self, "Erro", f"Preencha todos os campos: {e}")
+            print(e)
+
+    def transformarFAT(self):
+        try:
+            verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
+            if verificacao:
                 Cfat = FaturamentoUI(localNotas, localNotasSalvar, txtPrestados, self)
                 Cfat.gerarFat()
             else:
@@ -142,8 +153,11 @@ class JanelaPrincipal(QMainWindow):
             print(e)
 
     def printNotas(self, conteudo):
-        if 'completou' == conteudo:
-            QMessageBox.information(self, "NOTAS", "Notas finalizadas")
+        if 'completou Notas' == conteudo:
+            QMessageBox.information(self, "NOTAS", "Notas gerado")
+            self.btnAbrPastaNota.setVisible(True)
+        if 'completou Faturamento' == conteudo:
+            QMessageBox.information(self, "FATURAMENTO", "Faturamento gerado")
             self.btnAbrPastaNota.setVisible(True)
         if 'LIMPAR' == conteudo:
             self.txtinfoNota.setText('#'*62)

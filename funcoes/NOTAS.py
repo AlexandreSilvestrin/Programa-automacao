@@ -419,7 +419,7 @@ class Notas:
                 self.printarInformacoes('#'*62)
             else:
                 continue
-        self.printarInformacoes(f'completou')
+        self.printarInformacoes(f'completou Notas')
 
 class NotasUI(Notas):
     def __init__(self, local, local_salvar, txt_tomados, txt_entrada, ui):

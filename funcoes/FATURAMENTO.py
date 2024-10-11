@@ -50,6 +50,7 @@ class Faturamento:
 
         dados = dados.replace('\n                                                            ', '')
         dados = dados.replace('\n|   |     |                 |              |                |      |              |              |          I', 'I')
+        dados = dados.replace('\n|   |     |                   |                 |      |                |          I', 'I')
 
         lista = dados.split('\n')
 
@@ -73,28 +74,40 @@ class Faturamento:
 
         lista_io = StringIO(novalista)
         df = pd.read_csv(lista_io, sep = '|', header=None)
+        try:
+            df.columns = ('nada', 'data', 'nada2', 'NF', 'cnpj', 'valorTotal', 'nada3', 'iss pagar', 'iss retido/pagar', 'valorTotal2', 'nada6', 'iss ret', 'nada', 'valorirrf', 'nada7', 'nada8')
+            df['NF'] = pd.to_numeric(df['NF'], errors='coerce')
+            df['valorirrf'] = df['valorirrf'].astype(str)
+            df['valorirrf'] = df['valorirrf'].replace('nan', '0')
+            df = df.sort_values(by='NF')
+        except ValueError as e:
+            if "Length mismatch" in str(e):
+                print('aq')
+                df.columns = ('nada', 'data', 'nada2', 'NF', 'valorTotal', 'nada3', 'nada4', 'valorTotal2', 'nada5', 'nadaa', 'irrf', 'valorirrf', 'nada8', 'nad')
+                df['NF'] = pd.to_numeric(df['NF'], errors='coerce')
+                df['valorirrf'] = df['valorirrf'].astype(str)
+                df['valorirrf'] = df['valorirrf'].replace('nan', '0')
+                df = df.sort_values(by='NF')
+            else:
+                print('outro erro')
+                raise
+        
+        df = df[['data', 'NF', 'valorTotal', 'valorTotal2' ,'valorirrf']]
 
-        df.columns = ('nada', 'data', 'nada2', 'NF', 'cnpj', 'valorTotal', 'nada3', 'iss pagar', 'iss retido/pagar', 'valorTotal2', 'nada6', 'iss ret', 'nada', 'irrf', 'nada7', 'nada8')
-        df['NF'] = pd.to_numeric(df['NF'], errors='coerce')
-        df = df.sort_values(by='NF')
-
-
-        df = df[['data', 'NF', 'valorTotal', 'iss pagar', 'iss retido/pagar', 'valorTotal2', 'irrf']]
 
         df.loc[:, 'data'] = df['data']
         df.loc[:, 'NF'] = df['NF']
         df.loc[:, 'valorTotal'] = df['valorTotal'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
-        df.loc[:, 'iss pagar'] = df['iss pagar'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
-        df.loc[:, 'iss retido/pagar'] = df['iss retido/pagar'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
         df.loc[:, 'valorTotal2'] = df['valorTotal2'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
-        df.loc[:, 'irrf'] = df['irrf'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
+        df.loc[:, 'valorirrf'] = df['valorirrf'].apply(lambda x: int(x.strip().replace('.', '').replace(',', '')))
 
 
         dfG = pd.read_excel('GUIA NOME.xlsx')
         dfG.dropna(inplace=True)
         dfG['CONTRATO'] = dfG['CONTRATO'].apply(lambda x: x.replace(' ', '').replace('-', '').replace('.', '').strip())
         dfG['RAZÃO SOCIAL'] = dfG['RAZÃO SOCIAL'].apply(lambda x: x.upper())
-
+        print(dfG)
+        print(cnpj)
         linhaG = dfG[dfG['CNPJ DO CONSÓRCIO'] == cnpj.strip()].reset_index( drop=True)
         linhaG = linhaG.iloc[0].to_dict()
 
@@ -108,7 +121,7 @@ class Faturamento:
 
         listadf = []
         for e, linha in df.iterrows():
-            dia , numero, valortotal, iss_pagar, iss_retido_pagar, valortotal2, irrf = linha
+            dia , numero, valortotal, valortotal2, irrf = linha
             if valortotal > 0:
                 valor_total = valortotal
             else:
@@ -153,17 +166,6 @@ class Faturamento:
                         linha_total_porcent = {'numero': 1, 'valor': round(int(csll)*(porcent/100)), 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"CSLL RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {nome}"}
                         listadf.append(linha_total_porcent)
 
-            if iss_pagar >0:
-                linha_iss_retido_pagar = {'numero': 1, 'valor': '', 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
-                listadf.append(linha_iss_retido_pagar)
-                linha_iss = {'numero': 1, 'valor': iss_pagar, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS A PAGAR CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
-                listadf.append(linha_iss)
-            else:
-                linha_iss_retido_pagar = {'numero': 1, 'valor': iss_retido_pagar, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
-                listadf.append(linha_iss_retido_pagar)
-                linha_iss = {'numero': 1, 'valor': iss_retido_pagar, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS A PAGAR CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
-                listadf.append(linha_iss)
-                
             linha_vazia = {'numero': '', 'valor': '', 'data': '', 'vazio': '', 'nome': ''}
             listadf.append(linha_vazia)
             
@@ -198,11 +200,13 @@ class Faturamento:
         workbook.save(f'{caminhosalvar}/{pastaP} FATURAMENTO {mes}.{ano} {linhaG["CONTRATO"]}.xlsx')
 
     def gerarFat(self):
+        self.printarInformacoes('LIMPAR')
         self.criar_pasta()
         for caminho in self.caminhosFat:
             print(caminho)
             self.faturamento(caminho)
-        self.printarInformacoes('FATURAMENTO COMPLETO')
+        self.printarInformacoes(f'completou Faturamento')
+
 
 class FaturamentoUI(Faturamento):
     def __init__(self, caminho, caminhoSalvar, txtPrestados, ui):
@@ -213,9 +217,9 @@ class FaturamentoUI(Faturamento):
         self.ui.printNotas(conteudo)
 
 if __name__ == "__main__": 
-    base_directory = r"C:\Users\Alexandre\Downloads\drive-download-20240910T170737Z-001\LBR"
-    saida = r"C:\Users\Alexandre\Desktop\tsets"
-    txttomados = 'I51082024.txt'
+    base_directory = r"C:\Users\Alexandre\Downloads\drive-download-20241010T171031Z-001\LBR"
+    saida = r"C:/Users/Alexandre/Desktop/Nova pasta"
+    txttomados = 'I51092024.txt'
 
     notas = Faturamento(base_directory,  saida, txttomados)
     notas.gerarFat()
