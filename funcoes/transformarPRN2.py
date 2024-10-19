@@ -200,7 +200,6 @@ class PRN:
         try:
             df = pd.read_excel(arquivo, header=None)
             df = df.fillna('')
-            print(df.shape)
 
             if df.shape[1] < 18:
                 for i in range(df.shape[1], 18):

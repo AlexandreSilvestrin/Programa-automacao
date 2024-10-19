@@ -25,39 +25,13 @@ def check_single_instance():
     else:
         # Cria a memória compartilhada, indicando que esta é a primeira instância
         shared_mem.create(1)
-
     return shared_mem
-
-# Configurar o logger
-logging.basicConfig(filename='program_log.txt', 
-                    level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
-# Redirecionar stdout e stderr para o logger
-class StreamToLogger(object):
-    def __init__(self, logger, log_level=logging.INFO):
-        self.logger = logger
-        self.log_level = log_level
-        self.linebuf = ''
-
-    def write(self, buf):
-        for line in buf.rstrip().splitlines():
-            self.logger.log(self.log_level, line.rstrip())
-
-    def flush(self):
-        pass
-
-sys.stdout = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
-sys.stderr = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
 
 def excepthook(type, value, traceback):
     logging.error("Unhandled exception", exc_info=(type, value, traceback))
     print(traceback)
     QMessageBox.critical(None, "Erro", f"Ocorreu um erro não tratado: {value}")
     sys.__excepthook__(type, value, traceback)
-
-# Configura o manipulador global de exceções
-sys.excepthook = excepthook
 
 # Função para carregar as dependências pesadas
 def carregar_dependencias():
@@ -137,7 +111,7 @@ class JanelaPrincipal(QMainWindow):
             else:
                 QMessageBox.critical(self, "Erro", "Preencha todos os campos")
         except Exception as e:
-            QMessageBox.critical(self, "Erro", f"Preencha todos os campos: {e}")
+            QMessageBox.critical(self, "Erro", f"ERRO {e}")
             print(e)
 
     def transformarFAT(self):
@@ -149,7 +123,7 @@ class JanelaPrincipal(QMainWindow):
             else:
                 QMessageBox.critical(self, "Erro", "Preencha todos os campos")
         except Exception as e:
-            QMessageBox.critical(self, "Erro", f"Preencha todos os campos: {e}")
+            QMessageBox.critical(self, "Erro", f"ERRO {e}")
             print(e)
 
     def printNotas(self, conteudo):
@@ -160,10 +134,10 @@ class JanelaPrincipal(QMainWindow):
             QMessageBox.information(self, "FATURAMENTO", "Faturamento gerado")
             self.btnAbrPastaNota.setVisible(True)
         if 'LIMPAR' == conteudo:
-            self.txtinfoNota.setText('#'*62)
+            self.txtinfoNota.setText('')
         else:
             conteudoo = self.txtinfoNota.toPlainText()
-            self.txtinfoNota.setText(f'{conteudo}\n{conteudoo}')
+            self.txtinfoNota.setText(f'{'#'*62}\n{conteudo}\n{conteudoo}')
         QApplication.processEvents()
 
     def printPRN(self, conteudo):
@@ -355,7 +329,6 @@ class SegundaJanela(QMainWindow):
         df.at[i, 'Nome'] = nome
         self.df = df.copy()
 
-
         # Configurar número de linhas e colunas
         self.tableWidget.setRowCount(len(df.index))
         self.tableWidget.setColumnCount(len(df.columns))
@@ -395,6 +368,9 @@ class SegundaJanela(QMainWindow):
 
 
 if __name__ == "__main__":
+    # Configura o manipulador global de exceções
+    sys.excepthook = excepthook
+
     # Inicializa a aplicação Qt
     app = QApplication([])
 

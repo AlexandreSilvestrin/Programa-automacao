@@ -16,6 +16,11 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>XY-auto</string>
   </property>
@@ -62,7 +67,7 @@
 }</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label_5">
@@ -82,7 +87,7 @@ color: rgb(209, 209, 209);
 </string>
       </property>
       <property name="text">
-       <string>PROGRAMA DE AUTOMACAO V1.5.3</string>
+       <string>PROGRAMA DE AUTOMACAO V1.5.5</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -973,6 +978,11 @@ color: rgb(209, 209, 209);
       <width>151</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>-1</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
