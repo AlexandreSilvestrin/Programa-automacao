@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 import os
 import threading
 from PyQt5.QtCore import QSharedMemory
+import ast
 
 def check_single_instance():
     # Nome único para o segmento de memória compartilhada
@@ -45,14 +46,18 @@ class JanelaPrincipal(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("interface/mainW.ui", self)
+        self.config = self.carregar_configuracoes()
         self.configurarUI()
         self.setFixedSize(self.size())
         self.setWindowTitle("XY-auto")
         self.setWindowIcon(QIcon("icon/XY.ico"))
-
+        
     def configurarUI(self):
         self.textoPRNarq.setReadOnly(True)
         self.textoPRNlocal.setReadOnly(True)
+
+        self.localNotasSalvar.setText(self.config.get('caminhoNotas', ''))
+        self.textoPRNlocal.setText(self.config.get('caminhoPRN', ''))
 
         self.btnVoltar.clicked.connect(lambda: self.mostrar_pagina(0, cond=True))
         self.btnVoltar.setVisible(False)
@@ -69,12 +74,10 @@ class JanelaPrincipal(QMainWindow):
         self.btnFATtransformar.clicked.connect(self.transformarFAT)
         self.btnCNPJ.clicked.connect(self.abrir_segunda_janela)
         self.btn_exportar.clicked.connect(self.exportarbanco)
-
-        ######################
-
         self.btnAbrPastaNota.clicked.connect(self.abrirpastaN)
         self.btnAbrPastaNota.setVisible(False)
-        ##
+
+        ######################
         self.btnPRN.clicked.connect(lambda: self.mostrar_pagina(2))
         self.btnPRNarq.clicked.connect(self.localizararq)
         self.btnPRNpasta.clicked.connect(self.localizarpasta)
@@ -97,9 +100,22 @@ class JanelaPrincipal(QMainWindow):
         txtPrestados = f'I51{mes}{ano}.txt'
         txtEntrada = f'E{mes}{ano}.txt'
 
-        if os.path.exists(localNotas) and os.path.exists(localNotasSalvar) and mes.strip() != '' and ano.strip() != '':
+        if os.path.exists(localNotas):
+            pass
+        else:
+            QMessageBox.critical(self, "Erro", f"Local dos arquivos nao existe {localNotas}")
+            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+        
+        if os.path.exists(localNotasSalvar):
+            pass
+        else:
+            QMessageBox.critical(self, "Erro", f"Local salvar arquivos nao existe {localNotasSalvar}")
+            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+
+        if mes.strip() != '' and ano.strip() != '':
             return True, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
         else:
+            QMessageBox.critical(self, "Erro", f"Preencha mes e ano")
             return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
 
     def transformarNotas(self):
@@ -108,8 +124,6 @@ class JanelaPrincipal(QMainWindow):
             if verificacao:
                 Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
                 Cnotas.gerarNotas()
-            else:
-                QMessageBox.critical(self, "Erro", "Preencha todos os campos")
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"ERRO {e}")
             print(e)
@@ -120,8 +134,6 @@ class JanelaPrincipal(QMainWindow):
             if verificacao:
                 Cfat = FaturamentoUI(localNotas, localNotasSalvar, txtPrestados, self)
                 Cfat.gerarFat()
-            else:
-                QMessageBox.critical(self, "Erro", "Preencha todos os campos")
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"ERRO {e}")
             print(e)
@@ -189,9 +201,11 @@ class JanelaPrincipal(QMainWindow):
         file_name, _ = QFileDialog.getOpenFileName(self, "Selecionar Arquivo Excel", "", "Arquivos Excel (*.xlsx)", options=options)
         self.textoPRNarq.setText(file_name)
 
-    def localizarlocal(self):
+    def localizarlocal(self): #local salvar prn
         options = QFileDialog.Options()
         folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
+        self.config['caminhoPRN'] = folder_path
+        self.salvar_configuracoes(self.config)
         self.textoPRNlocal.setText(folder_path)
     
     def localizararqN(self):
@@ -199,15 +213,37 @@ class JanelaPrincipal(QMainWindow):
         folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
         self.localNotas.setText(folder_path)
 
-    def localizarlocalN(self):
+    def localizarlocalN(self): #funcao pra selecioar local onde ira salvar
         options = QFileDialog.Options()
         folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
+        self.config['caminhoNotas'] = folder_path
+        self.salvar_configuracoes(self.config)
         self.localNotasSalvar.setText(folder_path)
+
+    def carregar_configuracoes(self):
+        if os.path.exists("config.txt"):
+            with open("config.txt", "r") as f:
+                return ast.literal_eval(f.read())
+        return {}
+
+    def salvar_configuracoes(self, config):
+        """Salva as configurações no arquivo TXT."""
+        with open("config.txt", "w") as f:
+            f.write(str(config))
 
     def transformarprn(self):
         try:
             localarq = self.textoPRNarq.text()
             localsalvar = self.textoPRNlocal.text()
+
+            if not os.path.exists(localarq):
+                QMessageBox.critical(self, "Erro", f"Local arquivos nao existe {localarq}")
+                return
+
+            if not os.path.exists(localsalvar):
+                QMessageBox.critical(self, "Erro", f"Local salvar arquivos nao existe {localsalvar}")
+                return
+
             prn = PRNui(localarq, localsalvar, self)
             if prn.verificar():
                 conteudoo = self.txtinfoPRN.toPlainText()
