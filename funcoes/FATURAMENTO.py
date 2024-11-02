@@ -5,11 +5,12 @@ import os
 import traceback
 
 class Faturamento:
-    def __init__(self, caminho, caminhoSalvar, txtPrestados):
+    def __init__(self, caminho, caminhoSalvar, mes, ano):
         self.caminho = caminho
         self.caminhoS = caminhoSalvar
-        self.txtP = txtPrestados
-        self.caminhosFat, self.pastaP = self.encontrar_arquivo(caminho, txtPrestados)
+        self.txtP = f'I51{mes}{ano}.txt'
+        self.caminhosFat, self.pastaP = self.encontrar_arquivo(caminho, self.txtP)
+        self.data =  mes, ano
 
     def criar_pasta(self):
         ultimo_diretorio = os.path.basename(self.caminho)
@@ -26,13 +27,9 @@ class Faturamento:
                 caminhosFat.append(os.path.join(dirpath, txtPrestados)) 
         return caminhosFat, os.path.basename(os.path.normpath(caminho))
 
-    def pegardata(self):
-        nome = self.txtP.replace('.txt', '')
-        return nome[-6:-4], nome[-4:]
-
     def faturamento(self, caminho):
         try:
-            mes, ano = self.pegardata()
+            mes, ano = self.data
 
             caminhosalvar = self.caminhoS
             pastaP = self.pastaP
@@ -208,8 +205,8 @@ class Faturamento:
 
 
 class FaturamentoUI(Faturamento):
-    def __init__(self, caminho, caminhoSalvar, txtPrestados, ui):
-        super().__init__(caminho, caminhoSalvar, txtPrestados)
+    def __init__(self, caminho, caminhoSalvar, mes, ano, ui):
+        super().__init__(caminho, caminhoSalvar, mes, ano)
         self.ui = ui
 
     def printarInformacoes(self, conteudo):

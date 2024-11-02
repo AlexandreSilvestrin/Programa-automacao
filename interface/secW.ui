@@ -14,7 +14,29 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:black;
+   <string notr="true">QPushButton[class=&quot;botoes1&quot;]{
+border-radius: 10px;
+border-width:2px;
+background-color: qlineargradient(
+        spread:pad, 
+        x1:0, y1:1, 
+        x2:0, y2:0, 
+        stop:0 #648ed1,
+		stop:0.35 #366096,   /* Azul escuro (rgb(7, 0, 235)) */
+        stop:1 #366096  /* Azul claro (rgb(0, 255, 255)) */
+    );
+font-size: 18px;
+}
+
+QPushButton:hover[class=&quot;botoes1&quot;]{
+color: rgb(9, 9, 9);
+border-radius: 10px;
+border-width:2px;
+border-style:outset;
+border-color:black;
+background-color: #8cff57;
+font-size: 18px;
+}
 
 </string>
   </property>
@@ -64,26 +86,13 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
-color:black;
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color: rgb(48, 141, 255);
-font-size: 20px;
-}
-QPushButton:hover{
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color:rgb(112, 169, 255);
-font-size: 25px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>ATUALIZAR BANCO</string>
+    </property>
+    <property name="class" stdset="0">
+     <string>botoes1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnSalvarCNPJS">
@@ -96,26 +105,13 @@ font-size: 25px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
-color:black;
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color: rgb(48, 141, 255);
-font-size: 20px;
-}
-QPushButton:hover{
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color:rgb(112, 169, 255);
-font-size: 25px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>SALVAR PESQUISA</string>
+    </property>
+    <property name="class" stdset="0">
+     <string>botoes1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnPesqAPI">
@@ -128,26 +124,13 @@ font-size: 25px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
-color:black;
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color: rgb(48, 141, 255);
-font-size: 20px;
-}
-QPushButton:hover{
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color:rgb(112, 169, 255);
-font-size: 25px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>PESQUISAR(API)</string>
+    </property>
+    <property name="class" stdset="0">
+     <string>botoes1</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelP">
@@ -226,26 +209,13 @@ font-size: 25px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
-color:black;
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color: rgb(48, 141, 255);
-font-size: 20px;
-}
-QPushButton:hover{
-border-radius: 15px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color:rgb(112, 169, 255);
-font-size: 22px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>FINALIZAR/INTERROMPER</string>
+    </property>
+    <property name="class" stdset="0">
+     <string>botoes1</string>
     </property>
    </widget>
   </widget>

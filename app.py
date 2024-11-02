@@ -36,9 +36,9 @@ def excepthook(type, value, traceback):
 
 # Função para carregar as dependências pesadas
 def carregar_dependencias():
-    global PRNui, NotasUI, PesquisaAPIThread, exportar_db, FaturamentoUI
+    global PRNui, NotasUI, PesquisaAPIThread, exportar_db, importar_db ,FaturamentoUI
     from funcoes.transformarPRN2 import PRNui
-    from funcoes.NOTAS import NotasUI, PesquisaAPIThread, exportar_db
+    from funcoes.NOTAS import NotasUI, PesquisaAPIThread, exportar_db, importar_db
     from funcoes.FATURAMENTO import FaturamentoUI
 
 
@@ -74,6 +74,7 @@ class JanelaPrincipal(QMainWindow):
         self.btnFATtransformar.clicked.connect(self.transformarFAT)
         self.btnCNPJ.clicked.connect(self.abrir_segunda_janela)
         self.btn_exportar.clicked.connect(self.exportarbanco)
+        self.btn_importar.clicked.connect(self.importarbanco)
         self.btnAbrPastaNota.clicked.connect(self.abrirpastaN)
         self.btnAbrPastaNota.setVisible(False)
 
@@ -96,46 +97,43 @@ class JanelaPrincipal(QMainWindow):
         localNotasSalvar = self.localNotasSalvar.text()
         mes = self.txtmes.currentText()
         ano = self.txtano.currentText()
-        txtTomados = f'I56{mes}{ano}.txt'
-        txtPrestados = f'I51{mes}{ano}.txt'
-        txtEntrada = f'E{mes}{ano}.txt'
-
+        
         if os.path.exists(localNotas):
             pass
         else:
             QMessageBox.critical(self, "Erro", f"Local dos arquivos nao existe {localNotas}")
-            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+            return False, localNotas,  localNotasSalvar, mes, ano
         
         if os.path.exists(localNotasSalvar):
             pass
         else:
             QMessageBox.critical(self, "Erro", f"Local salvar arquivos nao existe {localNotasSalvar}")
-            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+            return False, localNotas,  localNotasSalvar, mes, ano
 
         if mes.strip() != '' and ano.strip() != '':
-            return True, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+            return True, localNotas,  localNotasSalvar, mes, ano
         else:
             QMessageBox.critical(self, "Erro", f"Preencha mes e ano")
-            return False, localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados
+            return False, localNotas,  localNotasSalvar, mes, ano
 
     def transformarNotas(self):
         try:
-            verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
+            verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
-                Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
+                Cnotas = NotasUI(localNotas, localNotasSalvar, mes, ano, self)
                 Cnotas.gerarNotas()
         except Exception as e:
-            QMessageBox.critical(self, "Erro", f"ERRO {e}")
+            QMessageBox.critical(self, "Erro", f"ERRO 1{e}")
             print(e)
 
     def transformarFAT(self):
         try:
-            verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
+            verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
-                Cfat = FaturamentoUI(localNotas, localNotasSalvar, txtPrestados, self)
+                Cfat = FaturamentoUI(localNotas, localNotasSalvar, mes, ano, self)
                 Cfat.gerarFat()
         except Exception as e:
-            QMessageBox.critical(self, "Erro", f"ERRO {e}")
+            QMessageBox.critical(self, "Erro", f"ERRO 2{e}")
             print(e)
 
     def printNotas(self, conteudo):
@@ -221,10 +219,13 @@ class JanelaPrincipal(QMainWindow):
         self.localNotasSalvar.setText(folder_path)
 
     def carregar_configuracoes(self):
-        if os.path.exists("config.txt"):
-            with open("config.txt", "r") as f:
-                return ast.literal_eval(f.read())
-        return {}
+        try:
+            if os.path.exists("config.txt"):
+                with open("config.txt", "r") as f:
+                    return ast.literal_eval(f.read())
+            return {}
+        except:
+            return {}
 
     def salvar_configuracoes(self, config):
         """Salva as configurações no arquivo TXT."""
@@ -255,13 +256,22 @@ class JanelaPrincipal(QMainWindow):
             self.txtinfoPRN.setText(f'{conteudoo} \n {e}\n OUVE UM ERRO ao transformar')
 
     def abrir_segunda_janela(self):
-        verificacao ,localNotas,  localNotasSalvar, txtTomados, txtEntrada, txtPrestados = self.verificarCampos()
+        verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
         if verificacao:
-            Cnotas = NotasUI(localNotas, localNotasSalvar, txtTomados, txtEntrada, self)
+            Cnotas = NotasUI(localNotas, localNotasSalvar, mes, ano, self)
             self.segunda_janela = SegundaJanela(Cnotas)
         else:
             QMessageBox.critical(self, "Erro", "O caminho do arquivo não é válido ou não existe.")
 
+    def importarbanco(self):
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getOpenFileName(self, "Selecionar Arquivo Excel", "", "Arquivos Excel (*.xlsx)", options=options)
+        if file_name == '':
+            pass
+        else:
+            importar_db(file_name)
+            QMessageBox.information(self, "IMPORTADO", f"Banco de dados importado com sucesso")
+    
     def exportarbanco(self):
         options = QFileDialog.Options()
         folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)

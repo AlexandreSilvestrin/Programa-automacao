@@ -1,55 +1,62 @@
-import re
-import tabula
 import os
 import pandas as pd
 from io import StringIO
 import openpyxl
 from unidecode import unidecode
-import PyPDF2
 import warnings
 import requests
-import json
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
-import traceback
+
+from funcoes.NOTAS_tomados import gerartomados
+from funcoes.NOTAS_entrada import gerarentrada
+from funcoes.NOTAS_pdf import gerarpdf
 
 warnings.filterwarnings("ignore", category=FutureWarning, message="errors='ignore' is deprecated")
 
 def exportar_db(folder_path):
-    dfbanco = pd.read_excel('BANCOCNPJ.xlsx')
-    dfbanco.columns = ('CNPJ/CPF', 'Nome')
-    dfbanco['CNPJ/CPF'] = dfbanco['CNPJ/CPF'].apply(lambda x: str(x).zfill(14))
+    dfbanco = pd.read_excel('BANCOCNPJ.xlsx', dtype=str)
+    dfbanco = dfbanco[['CNPJ', 'Nome']]
+    dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
     dfbanco.to_excel(f'{folder_path}/BANCOCNPJ.xlsx', index=False)
 
+def importar_db(folder_path):
+    try:
+        dfbancoatual = pd.read_excel('BANCOCNPJ.xlsx', dtype=str)
+    except:
+        dfbancoatual = pd.DataFrame()
+    dfbanco = pd.read_excel(folder_path, dtype=str)
+    dfbanco = dfbanco[['CNPJ', 'Nome']]
+    dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
+    dfbanco = pd.concat([dfbancoatual, dfbanco], ignore_index=True)
+    dfbanco.drop_duplicates(subset='CNPJ', keep='first', inplace=True)
+    dfbanco.to_excel(f'BANCOCNPJ.xlsx', index=False)
+
 class Notas:
-    def __init__(self, local, local_salvar, txt_tomados, txt_entrada):
+    def __init__(self, local, local_salvar, mes, ano):
         self.local = local
         self.local_salvar = local_salvar
-        self.txt_tomados = txt_tomados
-        self.txt_entrada = txt_entrada
-        self.caminhos = self.listarcaminhos(local, txt_entrada, txt_tomados)
-        self.data = self.pegardata()
+        self.txtTomados = f'I56{mes}{ano}.txt'
+        self.txtEntrada = f'E{mes}{ano}.txt'
+        self.caminhos = self.listarcaminhos()
+        self.data = mes, ano
         self.banco = self.lerbanco()
 
     def lerbanco(self):
         dfbanco = pd.read_excel('BANCOCNPJ.xlsx')
-        dfbanco.columns = ('CNPJ/CPF', 'Nome')
-        dfbanco['CNPJ/CPF'] = dfbanco['CNPJ/CPF'].apply(lambda x: str(x).zfill(14))
-        mapa_cnpj_nome = dict(zip(dfbanco['CNPJ/CPF'], dfbanco['Nome']))
+        dfbanco.columns = ('CNPJ', 'Nome')
+        dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
+        mapa_cnpj_nome = dict(zip(dfbanco['CNPJ'], dfbanco['Nome']))
         return mapa_cnpj_nome
 
     def printarInformacoes(self, conteudo):
         print(conteudo)
 
-    def pegardata(self):
-        nome = self.txt_tomados.replace('.txt', '')
-        return nome[-6:-4], nome[-4:]
-    
     def criar_pasta(self):
         ultimo_diretorio = os.path.basename(self.local)
         os.makedirs(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS', exist_ok=True)
         if not os.path.exists(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx'):
-            teste = pd.DataFrame(columns=['Data', 'Número', 'CNPJ/CPF' , 'Vazia1', 'Vazia2','Valor', 'NF Nome', 'Tipo'])
+            teste = pd.DataFrame(columns=['Data', 'Número', 'CNPJ' , 'Vazia1', 'Vazia2','Valor', 'NF Nome', 'Tipo'])
             teste.to_excel(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx', index=False)
         self.local_salvar = f'{self.local_salvar}/{ultimo_diretorio}/NOTAS'
 
@@ -95,30 +102,37 @@ class Notas:
         df1 = df1.drop(columns=['Nome'])
         return df1
 
-    def listarcaminhos(self, base_directory, txtentrada, txttomados):
+    def listarcaminhos(self):
         substrings = ['retencoes', 'retencao', 'Retençao', 'Retenção']
         lista_caminhos = []
-        for pasta in os.listdir(base_directory):
+        for pasta in os.listdir(self.local):
             file_path_entrada, file_path_tomados, file_path_pdf = False, False, False
 
-            for root, dirs, files in os.walk(f'{base_directory}/{pasta}'):
+            for root, dirs, files in os.walk(f'{self.local}/{pasta}'):
                 for file in files:
-                    if file in txtentrada:
+                    if file in self.txtEntrada:
                         file_path_entrada = os.path.join(root, file)
-                    if file in txttomados:
+                    if file in self.txtTomados:
                         file_path_tomados = os.path.join(root, file)
-                    if any(substring in unidecode(file).lower() for substring in substrings):
-                        file_path_pdf = os.path.join(root, file)
+            
+            if 'tomados' in pasta.lower():
+                for root, dirs, files in os.walk(os.path.join(self.local, pasta)):
+                    for file in files:
+                        if any(substring in unidecode(file).lower() for substring in substrings) and file_path_pdf is None:
+                            file_path_pdf = os.path.join(root, file)
+
+        
             caminhos = [pasta, file_path_tomados, file_path_entrada, file_path_pdf]
             lista_caminhos.append(caminhos)
+        
         return lista_caminhos
     
     def juntartomadospdf(self, df1, dfpdf):
         for index, row in dfpdf.iterrows():
             numero_atual = row['Número']
-            cnpj_atual = row['CNPJ/CPF']
+            cnpj_atual = row['CNPJ']
             # Encontrar o índice da linha correspondente no df1
-            idx_df1 = df1[(df1['Número'] == numero_atual)  & (df1['CNPJ/CPF'] == cnpj_atual)].index
+            idx_df1 = df1[(df1['Número'] == numero_atual)  & (df1['CNPJ'] == cnpj_atual)].index
             # Inserir a linha do dfpdf abaixo da linha correspondente no df1
             if not idx_df1.empty:
                 idx_df1 = idx_df1[0]  # Usar o primeiro índice se houver mais de um
@@ -127,229 +141,9 @@ class Notas:
                 df1 = pd.concat([df1, pd.DataFrame(row).T]).reset_index(drop=True)
         return df1
 
-    def lertomadostxt(self, caminhoT):
-        try:
-            def organizerdf(df1, df2):
-                for indice, linha in df2.iterrows():
-                    numero_correspondente = linha['Número']
-                    
-                    # Localizar a linha no DataFrame principal com o número correspondente
-                    indice_inserir = df1[df1['Número'] == numero_correspondente].index[0]
-                    
-                    # Inserir a linha do DataFrame secundário na linha seguinte ao DataFrame principal
-                    df1 = pd.concat([df1.loc[:indice_inserir], linha.to_frame().transpose(), df1.loc[indice_inserir+1:]]).reset_index(drop=True)
-                return df1
-            
-            with open(caminhoT, 'r') as txttomados:
-                dados = txttomados.read().replace(',', '').replace('.', '')
-            
-            # r'-{13}.*?-{13}'  - oque sera removido  {13} quantidade . qualquer caracter * zero ou mais aparicoes ? pega sempre as primeiras aparicoes// re.DOTALL o . detecta a quebra de linha
-            linhas_organizadas = re.sub(r'\n {30}', '', dados, flags=re.DOTALL).split('\n')
-            linhas_selecionadas = []
-
-            padrao_regex = re.compile(r'empresa(.*?)folha', re.DOTALL | re.IGNORECASE)
-            empresa = padrao_regex.search(dados).group(0).replace('Folha', '').replace(':', '').replace('empresa', '').strip()
-
-            padrao_regex = r"\|\s\d+\|\s\w\w\w"
-            for linha in linhas_organizadas:
-                if re.search(padrao_regex, linha):
-                    linhas_selecionadas.append(linha)
-
-            if not linhas_selecionadas:
-                dadosF = pd.DataFrame(columns=['Data', 'Número', 'Valor', 'CNPJ/CPF', 'Tipo'])
-                return dadosF, empresa.replace(':', '').replace('empresa', '').strip()
-            
-            linhas_selecionadas =  '\n'.join(linhas_selecionadas)
-            dados_io = StringIO(linhas_selecionadas)
-            dadosF = pd.read_csv(dados_io, sep='|', header=None, dtype=str)
-            dadosF.columns= ['zero', 'Data', 'dois', 'tres', 'Número', 'Valor' , 'seis', 'sete', 'oito', 'ISS Retido', 'CNPJ/CPF', 'onze', '12', '13']
-            dadosF = dadosF[['Data', 'Número', 'Valor' , 'ISS Retido', 'CNPJ/CPF']]
-            dadosF['ISS Retido'] = dadosF['ISS Retido'].astype(int)
-            dfiss = dadosF[dadosF['ISS Retido'] > 0].copy()
-            if not dfiss.empty:
-                dfiss['Tipo'] = 'ISS'
-                dfiss = dfiss[['Data', 'Número', 'ISS Retido', 'CNPJ/CPF', 'Tipo']].reset_index(drop=True)
-                dfiss.rename(columns={'ISS Retido': 'Valor'}, inplace=True)
-
-            dadosF['Tipo'] = 'Total'
-            dadosF = dadosF[['Data', 'Número', 'Valor', 'CNPJ/CPF', 'Tipo']]
-            dadosF = organizerdf(dadosF, dfiss)
-
-            return {
-                "df":dadosF
-                }
-        
-        except Exception as e:
-            erro = str(e)
-            trace = traceback.format_exc()
-            info = f'''INFO: HOUVE UM ERRO AO GERAR TOMADOS\nErro: {erro}'''
-            return {
-                "df": None,
-                "info" : info,
-                "erro": str(e),  # Mensagem da exceção
-                "erroF": traceback.format_exc(),  # Detalhes completos do traceback
-                "arquivo": "TOMADOS"
-                }
-
-    def lerentradatxt(self, caminhoE):
-        try:
-            with open(caminhoE, 'r', encoding='latin1') as entrada:
-                dados = entrada.read().split('\n')
-
-            dadosF = []
-            padrao_regex = re.compile(r"\|\d{2}/\d{2}/\d{4}\|")
-            for e, linha in enumerate(dados):
-                if re.search(padrao_regex, linha):
-                    dadosF.append(linha)
-                    dadosF.append(dados[e+1])
-
-            dadosF =  '\n'.join(dadosF)
-            dadosF = dadosF.replace('.', '')
-            dadosF = dadosF.replace(',', '')
-            dadosF = dadosF.replace('  |            |  |    |    | |           |   |          |          |', '')
-            dadosF = dadosF.replace('''   |          |          |\n|''', '')
-            dados_io = StringIO(dadosF)
-            dadosF = pd.read_csv(dados_io, sep='|', header=None, dtype=str)
-            dadosF = dadosF[[1,4,6,8,14]]
-            dadosF.columns= ['Data', 'Número', 'CNPJ/CPF', 'Valor', 'Nome']
-            dadosF['Data'] = pd.to_datetime(dadosF['Data'], format='%d/%m/%Y')
-            dadosF['Data'] = dadosF['Data'].dt.day
-            dadosF['CNPJ/CPF'] = dadosF['CNPJ/CPF'].astype(str).replace('/', '', regex=True)
-            dadosF['Nome'] = dadosF['Nome'].apply(lambda x: re.sub(r'\d{5,}', '', x))
-            return {
-                "df":dadosF
-                }
-        except Exception as e:
-            erro = str(e)
-            trace = traceback.format_exc()
-            info = f'''INFO: HOUVE UM ERRO AO GERAR ENTRADA\nErro: {erro}'''
-            return {
-                "df": None,
-                "info" : info,
-                "erro": str(e),  # Mensagem da exceção
-                "erroF": traceback.format_exc(),  # Detalhes completos do traceback
-                "arquivo": "ENTRADA"
-                }
-
-    def lerpdf(self, caminho):
-        try:
-            def verifica_tipo_pdf():
-                with open(caminho, 'rb') as file:
-                    reader = PyPDF2.PdfReader(file)
-                    text = ''
-                    for page_num in range(len(reader.pages)):
-                        text += reader.pages[page_num].extract_text()
-                if 'S E M     M O V I M E N T O' in text:
-                    return 'Tipo 3'
-                elif 'Notas Fiscais de Serviços' in text:
-                    return 'Tipo 2'
-                elif 'Notas de Entradas de Serviços' in text:
-                    return 'Tipo 1'
-                else:
-                    return 'Tipo não identificado'
-                    
-            tipo = verifica_tipo_pdf()
-            
-            if 'Tipo 3' == tipo:
-                dfFINAL = pd.DataFrame(columns=['Data',	'Número',	'CNPJ/CPF',	'Tipo',	'Valor'])
-                return {"df": dfFINAL}
-            elif tipo == 'Tipo 1':
-                # Specify the area coordinates (left, top, right, bottom) for extraction
-                area = [120.285,12.375,573.705,765.765]
-
-                df_list = tabula.read_pdf(caminho, pages=1, area=area,lattice=True)
-
-                tabela = pd.concat(df_list, ignore_index=True)
-                # Print the extracted data
-                
-                tabela.rename(columns={'Seg\rSocial': 'ValorSS'}, inplace=True)
-                tabela.rename(columns={'Unnamed: 0': 'Data'}, inplace=True)
-                tabelaF = tabela[['Data', 'Número', 'CNPJ/CPF', 'PIS Retido',  'COFINS Retida', 'CSLL retida', 'IRRF', 'ValorSS']]
-                tabelaF = tabelaF.replace(r'\r', ' ', regex=True)
-                tabelaF = tabelaF.replace(r',', '', regex=True)
-                tabelaF = tabelaF.replace(r'.', '')
-                tabelaF[['PIS Retido', 'COFINS Retida', 'CSLL retida']] = tabelaF[['PIS Retido', 'COFINS Retida', 'CSLL retida']].apply(lambda x: x.str.split())
-                tabelaF['PIS Retido'] =tabelaF['PIS Retido'].apply(lambda x: x[0])
-                tabelaF['COFINS Retida'] =tabelaF['COFINS Retida'].apply(lambda x: x[0])
-                tabelaF['CSLL retida'] =tabelaF['CSLL retida'].apply(lambda x: x[0])
-                tabelaF['CNPJ/CPF'] = tabelaF['CNPJ/CPF'].str.replace(r'[^\d]', '', regex=True)
-                tabelaF[['PIS Retido', 'COFINS Retida', 'CSLL retida']] =tabelaF[['PIS Retido', 'COFINS Retida', 'CSLL retida']].apply(lambda x: pd.to_numeric(x))
-                tabelaF['Valor'] = tabelaF[['PIS Retido', 'COFINS Retida', 'CSLL retida']].sum(axis=1)
-                tabelaF['IRRF'] = tabelaF['IRRF'].astype(int)
-                tabelaF['ValorSS'] = tabelaF['ValorSS'].astype(int)
-                tabelaF['Data'] = pd.to_datetime(tabelaF['Data'], format='%d/%m/%Y')
-                tabelaF['Data'] = tabelaF['Data'].dt.day.astype(str)
-                dadosIRRF = tabelaF[tabelaF['IRRF']>0].copy()
-                dadosIRRF['Tipo'] = 'IRRF'
-                dadosIRRF = dadosIRRF[['Data', 'Número', 'CNPJ/CPF', 'Tipo', 'IRRF',]].reset_index(drop=True)
-                dadosIRRF.rename(columns={'IRRF': 'Valor'}, inplace=True)
-                dadosRS = tabelaF.copy()
-                dadosRS['Tipo'] = 'Retencao Social'
-                dadosRS = dadosRS[['Data', 'Número', 'CNPJ/CPF', 'Tipo', 'Valor',]].reset_index(drop=True)
-                dadosINSS = tabelaF[tabelaF['ValorSS']>0].copy()
-                dadosINSS['Tipo'] = 'INSS'
-                dadosINSS = dadosINSS[['Data', 'Número', 'CNPJ/CPF', 'Tipo', 'ValorSS']].reset_index(drop=True)
-                dadosINSS.rename(columns={'ValorSS': 'Valor'}, inplace=True)
-                dfFINAL = pd.concat([dadosRS, dadosIRRF, dadosINSS], ignore_index=True)
-                dfFINAL['Número'] = dfFINAL['Número'].astype(str).str.zfill(10)
-            elif tipo == 'Tipo 2':
-                area = [123.672,31.476,562.523,779.733]
-
-                df_list = tabula.read_pdf(caminho, pages=1, area=area,lattice=True)
-
-                tabela = pd.concat(df_list, ignore_index=True)
-                tabela.columns = ['Data', 'nada', 'Número', 'CNPJ/CPF', 'nada', 'nadaa', 'asdf', 'PIS', 'COFINS', 'CSLL' ,'IRRF', 'INSS']
-                tabela = tabela[['Data', 'Número', 'CNPJ/CPF', 'PIS', 'COFINS', 'CSLL' ,'IRRF', 'INSS']]
-                tabela = tabela.replace(r'\r', ' ', regex=True)
-                tabela = tabela.replace(r',', '', regex=True)
-                tabela = tabela.replace(r'.', '')
-
-                tabela[['PIS', 'COFINS', 'CSLL', 'IRRF', 'INSS']] = tabela[['PIS', 'COFINS', 'CSLL', 'IRRF', 'INSS']].apply(lambda x: x.str.split())
-                tabela['PIS'] = tabela['PIS'].apply(lambda x: x[0])
-                tabela['COFINS'] = tabela['COFINS'].apply(lambda x: x[0])
-                tabela['CSLL'] = tabela['CSLL'].apply(lambda x: x[0])
-                tabela['IRRF'] = tabela['IRRF'].apply(lambda x: x[0])
-                tabela['INSS'] = tabela['INSS'].apply(lambda x: x[0])
-                tabela[['PIS', 'COFINS', 'CSLL', 'IRRF', 'INSS']] = tabela[['PIS', 'COFINS', 'CSLL', 'IRRF', 'INSS']].apply(lambda x: pd.to_numeric(x))
-                tabela['SOCIAL'] = tabela[['PIS', 'COFINS', 'CSLL']].sum(axis=1)
-                tabela.drop(columns=['PIS', 'COFINS', 'CSLL'], inplace=True)
-                tabelaINSS = tabela[tabela['INSS']> 0 ].copy()
-                tabelaINSS.rename(columns={'INSS': 'Valor'}, inplace=True)
-                if not tabelaINSS.empty:
-                    tabelaINSS['Tipo'] = 'INSS'
-                tabelaIRRF = tabela[tabela['IRRF']> 0 ].copy()
-                tabelaIRRF.rename(columns={'IRRF': 'Valor'}, inplace=True)
-                if not tabelaIRRF.empty:
-                    tabelaIRRF['Tipo'] = 'IRRF'
-                tabelaSOCIAL = tabela[tabela['SOCIAL'] > 0 ].copy()
-                tabelaSOCIAL.rename(columns={'SOCIAL': 'Valor'}, inplace=True)
-                if not tabelaSOCIAL.empty:
-                    tabelaSOCIAL['Tipo'] = 'Retencao Social'
-                dfFINAL = pd.concat([tabelaIRRF, tabelaSOCIAL, tabelaINSS])
-                dfFINAL.drop(columns=['IRRF', 'INSS', 'SOCIAL'], inplace=True)
-                dfFINAL['CNPJ/CPF'] = dfFINAL['CNPJ/CPF'].str.replace(r'[-./]', '', regex=True)
-                dfFINAL['Número'] = dfFINAL['Número'].astype(str).str.zfill(10)
-            else:
-                return 'faill'
-            
-            return {
-                "df": dfFINAL
-                }
-        except Exception as e:
-            erro = str(e)
-            trace = traceback.format_exc()
-            info = f'''INFO: HOUVE UM ERRO AO GERAR PDF\nErro: {erro}'''
-            return {
-                "df": None,
-                "info" : info,
-                "erro": str(e),  # Mensagem da exceção
-                "erroF": traceback.format_exc(),  # Detalhes completos do traceback
-                "arquivo": "PDF retencao"
-                }
-    
     def salvar_em_excel(self, df, nome_arquivo, localsalvar):
         # Obtendo o mês e o ano
-        mes, ano = self.pegardata()
+        mes, ano = self.data
         df = df.copy()
         df['Ano'] = ano
         df['Mês'] = mes
@@ -383,7 +177,7 @@ class Notas:
         self.printarInformacoes('LIMPAR')
         def attbanco(df, banco):
             for index, row in df.iterrows():
-                cnpj = row['CNPJ/CPF']
+                cnpj = row['CNPJ']
                 nome = row['Nome']
         # Verifica se o CNPJ já está no dicionário
                 if cnpj not in banco:
@@ -397,14 +191,14 @@ class Notas:
         for pasta, Ctomados, Centrada, Cpdf in self.caminhos:
             empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
             if cond:
-                dfentradaCNPJ = pd.concat([dfentradaCNPJ, dfentrada[['CNPJ/CPF', 'Nome']]]).reset_index(drop=True)
-                dftomadosCNPJ =  pd.concat([dftomadosCNPJ, dftomados[['CNPJ/CPF']]])
+                dfentradaCNPJ = pd.concat([dfentradaCNPJ, dfentrada[['CNPJ', 'Nome']]]).reset_index(drop=True)
+                dftomadosCNPJ =  pd.concat([dftomadosCNPJ, dftomados[['CNPJ']]])
 
         attbanco(dfentradaCNPJ, self.banco)
         self.banco = self.lerbanco()
-        dftomadosCNPJ = dftomadosCNPJ[(dftomadosCNPJ['CNPJ/CPF'] != '00') & (dftomadosCNPJ['CNPJ/CPF'] != '')]
-        dftomadosCNPJ = dftomadosCNPJ.drop_duplicates('CNPJ/CPF')
-        dftomadosCNPJ['Nome'] = dftomadosCNPJ['CNPJ/CPF'].map(self.banco)
+        dftomadosCNPJ = dftomadosCNPJ[(dftomadosCNPJ['CNPJ'] != '00') & (dftomadosCNPJ['CNPJ'] != '')]
+        dftomadosCNPJ = dftomadosCNPJ.drop_duplicates('CNPJ')
+        dftomadosCNPJ['Nome'] = dftomadosCNPJ['CNPJ'].map(self.banco)
         dftomadosCNPJ.columns = ['CNPJ', 'Nome']
         dftomadosCNPJ = dftomadosCNPJ[dftomadosCNPJ['Nome'].isna()][['CNPJ', 'Nome']].reset_index(drop=True)
         return dftomadosCNPJ
@@ -412,28 +206,30 @@ class Notas:
     def atualizarBANCOCNPJ(self, dfCNPJS):
         dfbanco = pd.read_excel('BANCOCNPJ.xlsx')
         dfbanco = pd.concat([dfbanco, dfCNPJS], ignore_index=True)
+        dfbanco = dfbanco[['CNPJ', 'Nome']]
+        dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
         dfbanco.to_excel('BANCOCNPJ.xlsx', index=False)
 
     def lerarquivos(self, pasta,Ctomados, Centrada, Cpdf):
-        dftomados, dfentrada, dfpdf = pd.DataFrame(columns=['Data', 'Número', 'CNPJ/CPF', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ/CPF', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ/CPF', 'Valor', 'Nome'])
+        dftomados, dfentrada, dfpdf = pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome'])
         empresa = pasta
 
         if Ctomados:
-            dftomados = self.lertomadostxt(Ctomados)
+            dftomados = gerartomados(Ctomados)
             if dftomados['df'] is None:
                 self.salvarerro(dftomados, empresa)
                 return empresa, dftomados, dfpdf, dfentrada, False
             else:
                 dftomados = dftomados['df']
         if Centrada:
-            dfentrada = self.lerentradatxt(Centrada)
+            dfentrada = gerarentrada(Centrada)
             if dfentrada['df'] is None:
                 self.salvarerro(dfentrada, empresa)
                 return empresa, dftomados, dfpdf, dfentrada, False
             else:
                 dfentrada =dfentrada['df']
         if Cpdf:
-            dfpdf = self.lerpdf(Cpdf)
+            dfpdf = gerarpdf(Cpdf)
             if dfpdf['df'] is None:
                 self.salvarerro(dfpdf, empresa)
                 return empresa, dftomados, dfpdf, dfentrada, False
@@ -446,11 +242,11 @@ class Notas:
         if dftomados.empty:
             return empresa, dftomados, dfpdf, dfentrada, False
         
-        dftomados['Nome'] = dftomados['CNPJ/CPF'].map(self.banco)
+        dftomados['Nome'] = dftomados['CNPJ'].map(self.banco)
         #terminiar leitura do banco e o resto embaixo (resolver juntar df tomados e dfentrada com linha vazia)
     
         if not dfentrada.empty:
-            linha_vazia = pd.DataFrame({'Data': ['00'], 'Número': ['00'], 'Valor': ['00'], 'CNPJ/CPF': ['']})
+            linha_vazia = pd.DataFrame({'Data': ['00'], 'Número': ['00'], 'Valor': ['00'], 'CNPJ': ['']})
             dftomados = pd.concat([dftomados, linha_vazia, dfentrada]).reset_index(drop=True)
             
         dftomados['Número'] = dftomados['Número'].astype(float).astype(int).apply(lambda x: f'{x:02}')
@@ -467,15 +263,15 @@ class Notas:
             empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
             if empresa:
                 if cond:
-                    self.salvar_em_excel(dftomados[[ 'Valor', 'Data', 'NF Nome', 'CNPJ/CPF']], f'{empresa}.xlsx', self.local_salvar)
+                    self.salvar_em_excel(dftomados[[ 'Valor', 'Data', 'NF Nome', 'CNPJ']], f'{empresa}.xlsx', self.local_salvar)
                 else:
                     self.printarInformacoes(f'''{empresa} SEM MOVIMENTO''')
         self.pradronizarxl(self.local_salvar)
         self.printarInformacoes(f'completou Notas')
 
 class NotasUI(Notas):
-    def __init__(self, local, local_salvar, txt_tomados, txt_entrada, ui):
-        super().__init__(local, local_salvar, txt_tomados, txt_entrada)
+    def __init__(self, local, local_salvar, mes, ano, ui):
+        super().__init__(local, local_salvar, mes, ano)
         self.ui = ui
 
     def printarInformacoes(self, conteudo):
