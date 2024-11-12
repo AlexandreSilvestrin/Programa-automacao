@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1032</width>
-    <height>900</height>
+    <height>901</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,61 +20,82 @@
    <string>XY-auto</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(52, 53, 65);
-font: 75 &quot;Liberation Mono&quot;;</string>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <property name="styleSheet">
-    <string notr="true">QPushButton[class=&quot;botoes1&quot;]{
-border-radius: 10px;
-border-width:2px;
-background-color: qlineargradient(
-        spread:pad, 
-        x1:0, y1:1, 
-        x2:0, y2:0, 
-        stop:0 #648ed1,
-		stop:0.35 #366096,   /* Azul escuro (rgb(7, 0, 235)) */
-        stop:1 #366096  /* Azul claro (rgb(0, 255, 255)) */
+   <string notr="true">QMainWindow {
+    background-color: rgb(52, 53, 65);
+}
+
+QStackedWidget {
+    background-color: rgb(52, 53, 65);
+    gridline-color: black;
+    border-style: solid;
+    border-width: 3px;
+}
+
+QPushButton[class=&quot;botoes1&quot;] {
+    border-radius: 10px;
+    border-width: 2px;
+    background-color: qlineargradient(
+        spread: pad, 
+        x1: 0, y1: 1, 
+        x2: 0, y2: 0, 
+        stop: 0 #648ed1,
+        stop: 0.35 #366096,   /* Azul escuro */
+        stop: 1 #366096  /* Azul claro */
     );
-font-size: 18px;
+    font-size: 18px;
 }
 
-QPushButton:hover[class=&quot;botoes1&quot;]{
-color: rgb(9, 9, 9);
-border-radius: 10px;
-border-width:2px;
-border-style:outset;
-border-color:black;
-background-color: #8cff57;
-font-size: 18px;
+QPushButton:hover[class=&quot;botoes1&quot;] {
+    color: rgb(9, 9, 9);
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: black;
+    background-color: #8cff57;
+    font-size: 18px;
 }
-
 
 QPushButton[class=&quot;botoes2&quot;] {
-	
-	background-color: rgb(37, 38, 47);
+    background-color: rgb(37, 38, 47);
     color: white;
     border-radius: 10px;
 }
 
 QPushButton:hover[class=&quot;botoes2&quot;] {
-	font-size: 12px;
-	background-color: rgb(82, 84, 103);
+    font-size: 12px;
+    background-color: rgb(82, 84, 103);
 }
 
+QLineEdit {
+    background-color: rgb(92, 94, 115);
+    color: white;
+}
+
+QLabel {
+    font-size: 18px;
+    border-radius: 15px;
+    border-style: outset;
+    color: rgb(209, 209, 209);
+}
+
+QTextEdit{
+background-color: rgb(74, 76, 93);
+color: white;
+}
 QLineEdit{
-	background-color: rgb(92, 94, 115);
+background-color: rgb(74, 76, 93);
+color: white;
+}
+
+QComboBox{
 	color: white;
+background-color: rgb(92, 94, 115);
 }
-
-QLabel{
-font-size: 18px;
-border-radius: 15px;
-border-style: outset;
-color: rgb(209, 209, 209);
-}
-
 </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
@@ -107,12 +128,7 @@ color: rgb(209, 209, 209);
      <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="styleSheet">
-     <string notr="true">QStackedWidget{
-	background-color: rgb(52, 53, 65);
-	gridline-color: black;
-	border-style:solid;
-	border-width:3px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -121,21 +137,18 @@ color: rgb(209, 209, 209);
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>80</y>
+        <x>0</x>
+        <y>70</y>
         <width>991</width>
         <height>151</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 15px;
-font: 87 12pt &quot;Arial Black&quot;;
-border-style: outset;
-color: rgb(209, 209, 209);
+       <string notr="true">font-size: 25px;
 </string>
       </property>
       <property name="text">
-       <string>PROGRAMA DE AUTOMACAO V1.5.7</string>
+       <string>PROGRAMA DE AUTOMACAO V1.5.9</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -153,7 +166,7 @@ color: rgb(209, 209, 209);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">font-size: 22px;</string>
+       <string notr="true">font-size: 25px;</string>
       </property>
       <property name="text">
        <string>NOTAS+FATURAMENTO</string>
@@ -283,15 +296,14 @@ color: rgb(209, 209, 209);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(74, 76, 93);
-color: white;</string>
+       <string notr="true"/>
       </property>
       <property name="html">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:72; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QPushButton" name="btnAbrPastaNota">
@@ -415,8 +427,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white;
-background-color: rgb(92, 94, 115);</string>
+       <string notr="true"/>
       </property>
       <item>
        <property name="text">
@@ -497,8 +508,7 @@ background-color: rgb(92, 94, 115);</string>
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: white;
-background-color: rgb(92, 94, 115);</string>
+       <string notr="true"/>
       </property>
       <item>
        <property name="text">
@@ -621,11 +631,7 @@ background-color: rgb(92, 94, 115);</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 15px;
-font: 87 18pt &quot;Arial Black&quot;;
-border-style: outset;
-color: rgb(209, 209, 209);
-</string>
+       <string notr="true">font-size: 25px;</string>
       </property>
       <property name="text">
        <string>Transformar PRN</string>
@@ -711,11 +717,7 @@ color: rgb(209, 209, 209);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 15px;
-font: 87 12pt &quot;Arial Black&quot;;
-border-style: outset;
-color: rgb(209, 209, 209);
-</string>
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>LOCAL PARA SALVAR</string>
@@ -734,11 +736,7 @@ color: rgb(209, 209, 209);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 15px;
-font: 87 12pt &quot;Arial Black&quot;;
-border-style: outset;
-color: rgb(209, 209, 209);
-</string>
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>SELECIONAR ARQUIVO/PASTA</string>
@@ -776,8 +774,7 @@ color: rgb(209, 209, 209);
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(74, 76, 93);
-color: white;</string>
+       <string notr="true"/>
       </property>
      </widget>
      <widget class="QPushButton" name="btnAbrPasta">
@@ -1025,7 +1022,7 @@ font-size: 21px;
    <widget class="QPushButton" name="btnVoltar">
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>820</x>
       <y>10</y>
       <width>151</width>
       <height>51</height>
@@ -1051,6 +1048,38 @@ font-size: 20px;
     </property>
     <property name="text">
      <string>VOLTAR</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnescuro">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>20</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnclaro">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>20</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

@@ -1,6 +1,6 @@
 import logging
 import sys
-from PyQt5 import uic
+from PyQt5 import uic , QtCore
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
@@ -51,8 +51,33 @@ class JanelaPrincipal(QMainWindow):
         self.setFixedSize(self.size())
         self.setWindowTitle("XY-auto")
         self.setWindowIcon(QIcon("icon/XY.ico"))
+        self.apply_stylesheet('static/dark.css', 'escuro')
         
+
+    def apply_stylesheet(self, file_path, botao):
+        if botao == "escuro":
+            self.btnescuro.setVisible(False)
+            self.btnclaro.setVisible(True)
+        if botao == 'claro':
+            self.btnclaro.setVisible(False)
+            self.btnescuro.setVisible(True)
+
+        """Carrega e aplica um arquivo de estilo QSS."""
+        with open(file_path, 'r') as style_file:
+            style = style_file.read()
+            self.setStyleSheet(style)
+
     def configurarUI(self):
+        icon1 = QIcon('icon/luz.png')
+        icon2 = QIcon('icon/luz1.png')
+        self.btnescuro.setIcon(icon2)
+        self.btnescuro.setIconSize(QtCore.QSize(32, 32))
+        self.btnclaro.setIcon(icon1)
+        self.btnclaro.setIconSize(QtCore.QSize(32, 32))
+        self.btnescuro.clicked.connect(lambda: self.apply_stylesheet('static/dark.css', 'escuro'))
+        self.btnclaro.clicked.connect(lambda: self.apply_stylesheet('static/light.css', 'claro'))
+        #####
+
         self.textoPRNarq.setReadOnly(True)
         self.textoPRNlocal.setReadOnly(True)
 

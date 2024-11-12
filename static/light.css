@@ -1,0 +1,76 @@
+QMainWindow {
+    background-color: rgb(199, 199, 199);  /* Fundo claro, mas suavizado */
+}
+
+QStackedWidget {
+    background-color: rgb(199, 199, 199); /* Mesmo fundo claro e suave */
+    gridline-color: rgb(180, 180, 180);     /* Linhas de grade mais suaves */
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(107, 107, 107);     /* Cor de borda suavizada */
+}
+
+QPushButton[class="botoes1"] {
+    border-radius: 10px;
+    border-width: 2px;
+    background-color: qlineargradient(
+        spread: pad,
+        x1: 0, y1: 1,
+        x2: 0, y2: 0,
+        stop: 0 #648ed1,
+        stop: 0.35 #366096,   /* Azul escuro */
+        stop: 1 #366096      /* Azul suave */
+    );
+    font-size: 18px;
+    color: rgb(30, 30, 30); /* Cor do texto mais escura para contraste */
+}
+
+QPushButton:hover[class="botoes1"] {
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: rgb(129, 129, 129);
+    background-color: rgb(102, 153, 50);  /* Verde suave */
+    font-size: 18px;
+}
+
+QPushButton[class="botoes2"] {
+    background-color: rgb(126, 126, 126);  /* Fundo claro */
+    color: rgb(30, 30, 30);  /* Texto escuro */
+    border-radius: 10px;
+    border: 1px solid rgb(107, 107, 107);    /* Borda suave */
+}
+
+QPushButton:hover[class="botoes2"] {
+    font-size: 12px;
+    background-color: rgb(136, 136, 136);  /* Fundo levemente mais escuro ao passar o mouse */
+}
+
+QLineEdit {
+    background-color: rgb(180, 180, 180);   /* Fundo suave, mas claro */
+    color: rgb(30, 30, 30);  /* Texto escuro */
+    border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107);   /* Borda suave */
+}
+
+QLabel {
+    font-size: 18px;
+    border-radius: 10px;
+    border-style: outset;
+    color: rgb(50, 50, 50);  /* Texto mais suave, mas ainda legível */
+}
+
+QTextEdit {
+    background-color: rgb(180, 180, 180);  /* Fundo suave */
+    color: rgb(30, 30, 30);  /* Texto escuro */
+    border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107);   /* Borda suave */
+}
+
+QComboBox {
+    color: rgb(30, 30, 30);  /* Texto escuro */
+    background-color: rgb(180, 180, 180);   /* Fundo suave */
+    border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107);   /* Borda suave */
+}
