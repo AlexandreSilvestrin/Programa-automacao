@@ -99,7 +99,9 @@ class Faturamento:
             dfG['CONTRATO'] = dfG['CONTRATO'].apply(lambda x: x.replace(' ', '').replace('-', '').replace('.', '').strip())
             dfG['RAZÃO SOCIAL'] = dfG['RAZÃO SOCIAL'].apply(lambda x: x.upper())
             linhaG = dfG[dfG['CNPJ DO CONSÓRCIO'] == cnpj.strip()].reset_index( drop=True)
-            linhaG = linhaG.iloc[0].to_dict()
+            linhaG = linhaG.iloc[0].str.upper()
+            linhaG = linhaG.to_dict()
+            
 
             lista = linhaG['PORCENTAGEM POR CONSORCIADA'].replace('%', '').replace(',', '.').split()
             listaP = [lista[i:i + 2] for i in range(0, len(lista), 2)]
@@ -156,6 +158,11 @@ class Faturamento:
                             linha_total_porcent = {'numero': 1, 'valor': round(int(csll)*(porcent/100)), 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"CSLL RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {nome}"}
                             listadf.append(linha_total_porcent)
 
+                linha_iss_retido_pagar = {'numero': 1, 'valor': '', 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
+                listadf.append(linha_iss_retido_pagar)
+                linha_iss = {'numero': 1, 'valor': '', 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"ISS A PAGAR CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
+                listadf.append(linha_iss)
+                    
                 linha_vazia = {'numero': '', 'valor': '', 'data': '', 'vazio': '', 'nome': ''}
                 listadf.append(linha_vazia)
                 
