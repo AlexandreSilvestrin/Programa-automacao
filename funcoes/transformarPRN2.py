@@ -217,7 +217,7 @@ class PRN:
                 texto = texto+f'{campo01(campoo1)}{campo02(codigo_debito)}{campo03(codigo_credito)}{campo04(codigo_historico)}{campo05()}{campo06(valor)}{campo07(data)}{campo08()}{campo09(nome)}{campo10(campoo10)}{campo11(campoo11)}{campo12(centroD)}{campo13(valorD)}{campo14(centroC)}{campo15(valorC)}{campo16(letra)}{campo17()}{campo18()}\n'
 
 
-            with open(f'{salvar}/{nomearq}.prn', 'w') as arq:
+            with open(f'{salvar}/{nomearq}.prn', 'w', encoding='UTF-8') as arq:
                 arq.write(texto)
             
             self.printarInformacoes(f'NOME: {nomearq}.prn GERADO')

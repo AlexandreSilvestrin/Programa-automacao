@@ -148,7 +148,7 @@ background-color: rgb(92, 94, 115);
 </string>
       </property>
       <property name="text">
-       <string>PROGRAMA DE AUTOMACAO V1.5.9</string>
+       <string>PROGRAMA DE AUTOMACAO V1.6.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

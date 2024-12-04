@@ -52,8 +52,7 @@ class JanelaPrincipal(QMainWindow):
         self.setWindowTitle("XY-auto")
         self.setWindowIcon(QIcon("icon/XY.ico"))
         self.apply_stylesheet('static/dark.css', 'escuro')
-        
-
+    
     def apply_stylesheet(self, file_path, botao):
         if botao == "escuro":
             self.btnescuro.setVisible(False)
