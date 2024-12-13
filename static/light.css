@@ -21,7 +21,6 @@ QPushButton[class="botoes1"] {
         stop: 0.35 #366096,   /* Azul escuro */
         stop: 1 #366096      /* Azul suave */
     );
-    font-size: 18px;
     color: rgb(30, 30, 30); /* Cor do texto mais escura para contraste */
 }
 
@@ -32,7 +31,6 @@ QPushButton:hover[class="botoes1"] {
     border-style: outset;
     border-color: rgb(129, 129, 129);
     background-color: rgb(102, 153, 50);  /* Verde suave */
-    font-size: 18px;
 }
 
 QPushButton[class="botoes2"] {
@@ -43,7 +41,6 @@ QPushButton[class="botoes2"] {
 }
 
 QPushButton:hover[class="botoes2"] {
-    font-size: 12px;
     background-color: rgb(136, 136, 136);  /* Fundo levemente mais escuro ao passar o mouse */
 }
 
@@ -55,7 +52,6 @@ QLineEdit {
 }
 
 QLabel {
-    font-size: 18px;
     border-radius: 10px;
     border-style: outset;
     color: rgb(50, 50, 50);  /* Texto mais suave, mas ainda legível */
@@ -73,4 +69,17 @@ QComboBox {
     background-color: rgb(180, 180, 180);   /* Fundo suave */
     border-radius: 5px;
     border: 1px solid rgb(107, 107, 107);   /* Borda suave */
+}
+
+[class="config"]{
+	background-color: rgb(180, 180, 180); 
+	border-radius: 5px;
+    border: 1px solid rgb(107, 107, 107); 
+}
+
+QTableWidget::item { min-width: 50px; }
+
+QTableWidget{ 
+    background-color: rgb(180, 180, 180); 
+    border: 1px solid rgb(107, 107, 107); 
 }

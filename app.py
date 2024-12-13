@@ -2,12 +2,13 @@ import logging
 import sys
 from PyQt5 import uic , QtCore
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import Qt ,QTimer
 import os
 import threading
 from PyQt5.QtCore import QSharedMemory
 import ast
+import json
 
 def check_single_instance():
     # Nome único para o segmento de memória compartilhada
@@ -42,39 +43,92 @@ def carregar_dependencias():
     from funcoes.FATURAMENTO import FaturamentoUI
 
 
+class Configuracoes(QDialog):
+    def __init__(self, parent):
+        super().__init__(parent)
+        uic.loadUi("interface/config.ui", self)
+        self.parent = parent
+        self.setWindowTitle("Configurações")
+        self.setWindowFlags(Qt.FramelessWindowHint)
+
+        self.btnescuro.clicked.connect(lambda: self.parent.apply_stylesheet('escuro'))
+        self.btnclaro.clicked.connect(lambda: self.parent.apply_stylesheet('claro'))
+        self.btn85.clicked.connect(lambda: (self.parent.load_and_resize_widget_geometry(scale_factor=0.85), self.moverJanelaConfiguracoes()))
+        self.btn70.clicked.connect(lambda: (self.parent.load_and_resize_widget_geometry(scale_factor=0.7), self.moverJanelaConfiguracoes()))
+        self.btn50.clicked.connect(lambda: (self.parent.load_and_resize_widget_geometry(scale_factor=0.5), self.moverJanelaConfiguracoes()))
+        self.btn100.clicked.connect(lambda: (self.parent.load_and_resize_widget_geometry(scale_factor=1), self.moverJanelaConfiguracoes()))
+        self.btnfonteP.clicked.connect(lambda: self.parent.ajustar_fonte(delta=2))
+        self.btnfonteM.clicked.connect(lambda: self.parent.ajustar_fonte(delta=-2))
+        self.label_fonte.setText(f'{self.parent.font().pointSize()}')
+
+
+    def moverJanelaConfiguracoes(self):
+        button_pos = self.parent.btnconfig.pos()
+        button_width = self.parent.btnconfig.width()  # Largura do botão
+        button_height = self.parent.btnconfig.height()
+
+        # Posição do canto direito do botão
+        x_pos = button_pos.x() + button_width - self.width()
+        y_pos = button_pos.y()  + button_height  #Mantém a posição vertical no mesmo nível do botão
+        
+        # Mover a janela de configurações para a posição calculada
+        self.move(x_pos, y_pos)
+
+    def showEvent(self, event):
+        # Pega a posição do botão
+        button_pos = self.parent.btnconfig.pos()
+        button_width = self.parent.btnconfig.width()  # Largura do botão
+        button_height = self.parent.btnconfig.height()
+
+        # Posição do canto direito do botão
+        x_pos = button_pos.x() + button_width - self.width()
+        y_pos = button_pos.y()  + button_height  #Mantém a posição vertical no mesmo nível do botão
+        
+        # Mover a janela de configurações para a posição calculada
+        self.move(x_pos, y_pos)
+        super().showEvent(event)
+
 class JanelaPrincipal(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("interface/mainW.ui", self)
         self.config = self.carregar_configuracoes()
-        self.configurarUI()
-        self.setFixedSize(self.size())
+        self.show()
         self.setWindowTitle("XY-auto")
         self.setWindowIcon(QIcon("icon/XY.ico"))
-        self.apply_stylesheet('static/dark.css', 'escuro')
-    
-    def apply_stylesheet(self, file_path, botao):
+        self.max_width = 1030
+        self.max_height = 901
+        self.setFixedSize(self.max_width, self.max_height)
+        self.config_window = None
+        self.configurarUI()
+
+    def config_tema(self):
+        fonte = self.config.get('fonte')
+        tema = self.config.get('tema')
+        self.scale = self.config.get('scale')
+        if fonte:
+            self.ajustar_fonte(fonte, carregar=True)
+        if tema:
+            self.apply_stylesheet(tema)
+        if self.scale:
+            self.load_and_resize_widget_geometry(self.scale)
+
+    def apply_stylesheet(self, botao):
         if botao == "escuro":
-            self.btnescuro.setVisible(False)
-            self.btnclaro.setVisible(True)
+            file_path = 'static/dark.css'
+
         if botao == 'claro':
-            self.btnclaro.setVisible(False)
-            self.btnescuro.setVisible(True)
+            file_path = 'static/light.css'
 
         """Carrega e aplica um arquivo de estilo QSS."""
         with open(file_path, 'r') as style_file:
-            style = style_file.read()
-            self.setStyleSheet(style)
-
+            self.original_style = style_file.read()
+            self.setStyleSheet(self.original_style)
+        self.config['tema']= botao
+        self.salvar_configuracoes(self.config)
+    
     def configurarUI(self):
-        icon1 = QIcon('icon/luz.png')
-        icon2 = QIcon('icon/luz1.png')
-        self.btnescuro.setIcon(icon2)
-        self.btnescuro.setIconSize(QtCore.QSize(32, 32))
-        self.btnclaro.setIcon(icon1)
-        self.btnclaro.setIconSize(QtCore.QSize(32, 32))
-        self.btnescuro.clicked.connect(lambda: self.apply_stylesheet('static/dark.css', 'escuro'))
-        self.btnclaro.clicked.connect(lambda: self.apply_stylesheet('static/light.css', 'claro'))
+        
         #####
 
         self.textoPRNarq.setReadOnly(True)
@@ -87,6 +141,8 @@ class JanelaPrincipal(QMainWindow):
         self.btnVoltar.setVisible(False)
 
         ### configurar FUNCOES DAS NOTAS
+        self.btnFATtransformar.setVisible(False)
+        self.btnNotatransformar.setVisible(False)
 
         self.localNotas.setReadOnly(True)
         self.localNotasSalvar.setReadOnly(True)
@@ -115,6 +171,91 @@ class JanelaPrincipal(QMainWindow):
         self.btnRazao.clicked.connect(lambda: self.mostrar_pagina(3))
         self.btnRateio.clicked.connect(lambda: self.mostrar_pagina(4))
         self.btnPRNtransformar.clicked.connect(self.transformarprn)
+        self.btncss.clicked.connect(self.export_style)
+
+        self.btnconfig.clicked.connect(self.abrirConfig)
+        self.config_tema()
+
+    def abrirConfig(self):
+        # Verifica se a janela de configurações já está aberta
+        if self.config_window and self.config_window.isVisible():
+            self.config_window.close()  # Se estiver visível, fecha
+        else:
+            self.config_window = Configuracoes(self)  # Caso contrário, abre
+            self.config_window.exec_()
+
+    def export_style(self):
+        """Exporta a geometria de todos os widgets para um arquivo JSON."""
+        widget_data = {}
+        
+        # Itera sobre todos os widgets da janela
+        for widget in self.findChildren(QWidget):  # Encontra todos os widgets filhos
+            widget_name = widget.objectName()  # Obtém o nome do widget
+            if widget_name:  # Apenas widgets nomeados
+                geometry = widget.geometry().getRect()  # Obtém a geometria (x, y, width, height)
+                widget_data[widget_name] = geometry  # Salva no dicionário
+
+        # Salva no arquivo JSON
+        with open("janela1.json", "w") as file:
+            json.dump(widget_data, file, indent=4)
+
+        print("Geometria exportada para 'janela1.json'")
+    
+    def load_and_resize_widget_geometry(self, scale_factor=0.8):
+        try:
+            self.scale = scale_factor
+            self.config['scale'] = scale_factor
+            self.salvar_configuracoes(self.config)
+            """Carrega a geometria dos widgets de um arquivo JSON e ajusta com base no fator de escala."""
+            with open("janela1.json", "r") as file:
+                widget_data = json.load(file)
+
+            # Itera sobre todos os widgets e aplica a geometria com o fator de escala
+            for widget_name, geometry in widget_data.items():
+                widget = getattr(self, widget_name, None)  # Obtém o widget pelo nome
+                if widget:
+                    # Calcula o novo tamanho e posição baseado no fator de escala
+                    new_geometry = [
+                        int(geometry[0] * scale_factor),  # x
+                        int(geometry[1] * scale_factor),  # y
+                        int(geometry[2] * scale_factor),  # width
+                        int(geometry[3] * scale_factor)   # height
+                    ]
+                    widget.setGeometry(*new_geometry)  # Aplica a nova geometria
+
+            final_width = int(self.max_width * scale_factor)
+            final_height = int(self.max_height * scale_factor)
+            
+            self.setFixedSize(final_width, final_height)
+            print(f"Widgets redimensionados para {scale_factor*100}% do tamanho original.")
+        except:
+            pass
+
+    def ajustar_fonte(self, delta, carregar=False):
+        if carregar:
+            tamanho = 0
+        else:
+            tamanho = self.font().pointSize()
+        self.config['fonte'] = tamanho+delta
+        self.salvar_configuracoes(self.config)
+        font = QFont("Calibri", tamanho+delta)  # Tamanho 14
+        """Aplicar a fonte para todos os widgets filhos de forma recursiva"""
+        self.setFont(font)  # Altera a fonte do widget atual
+        if self.config_window and self.config_window.isVisible():
+            self.config_window.label_fonte.setText(f'{tamanho+delta}')
+
+        # Aplicar recursivamente aos filhos
+        for child in self.findChildren(QWidget):
+            child.setFont(font)
+        
+    def carregar_configuracoes(self):
+        try:
+            if os.path.exists("config.txt"):
+                with open("config.txt", "r") as f:
+                    return ast.literal_eval(f.read())
+            return {}
+        except:
+            return {}
 
     def verificarCampos(self):
         localNotas = self.localNotas.text()
@@ -141,6 +282,7 @@ class JanelaPrincipal(QMainWindow):
             return False, localNotas,  localNotasSalvar, mes, ano
 
     def transformarNotas(self):
+        self.btnNotatransformar.setVisible(False)
         try:
             verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
@@ -151,6 +293,7 @@ class JanelaPrincipal(QMainWindow):
             print(e)
 
     def transformarFAT(self):
+        self.btnFATtransformar.setVisible(False)
         try:
             verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
@@ -242,15 +385,6 @@ class JanelaPrincipal(QMainWindow):
         self.salvar_configuracoes(self.config)
         self.localNotasSalvar.setText(folder_path)
 
-    def carregar_configuracoes(self):
-        try:
-            if os.path.exists("config.txt"):
-                with open("config.txt", "r") as f:
-                    return ast.literal_eval(f.read())
-            return {}
-        except:
-            return {}
-
     def salvar_configuracoes(self, config):
         """Salva as configurações no arquivo TXT."""
         with open("config.txt", "w") as f:
@@ -284,6 +418,11 @@ class JanelaPrincipal(QMainWindow):
         if verificacao:
             Cnotas = NotasUI(localNotas, localNotasSalvar, mes, ano, self)
             self.segunda_janela = SegundaJanela(Cnotas)
+            self.segunda_janela.setStyleSheet(self.styleSheet())
+            self.segunda_janela.setFont(self.font())
+            self.segunda_janela.load_and_resize_widget_geometry(self.scale)
+            self.btnFATtransformar.setVisible(True)
+            self.btnNotatransformar.setVisible(True)
         else:
             QMessageBox.critical(self, "Erro", "O caminho do arquivo não é válido ou não existe.")
 
@@ -326,7 +465,6 @@ class SegundaJanela(QMainWindow):
             # Preencher a tabela com os dados iniciais
             self.thread = PesquisaAPIThread()
             self.thread.resultado_encontrado.connect(self.atualizar)
-            self.btnSalvarCNPJS.clicked.connect(self.salvarCNPJS)
             self.tableWidget.setColumnWidth(1, 550)
             self.tableWidget.setColumnWidth(0, 150)
             self.btn_salvar_banco.clicked.connect(self.juntarCNPJSbanco)
@@ -335,6 +473,45 @@ class SegundaJanela(QMainWindow):
             self.btn_salvar_banco.setVisible(False) 
             self.setFixedSize(self.size())
             self.show()
+
+    def load_and_resize_widget_geometry(self, scale_factor=0.8):
+        """Carrega a geometria dos widgets de um arquivo JSON e ajusta com base no fator de escala."""
+        with open("janela2.json", "r") as file:
+            widget_data = json.load(file)
+
+        # Itera sobre todos os widgets e aplica a geometria com o fator de escala
+        for widget_name, geometry in widget_data.items():
+            widget = getattr(self, widget_name, None)  # Obtém o widget pelo nome
+            if widget:
+                # Calcula o novo tamanho e posição baseado no fator de escala
+                new_geometry = [
+                    int(geometry[0] * scale_factor),  # x
+                    int(geometry[1] * scale_factor),  # y
+                    int(geometry[2] * scale_factor),  # width
+                    int(geometry[3] * scale_factor)   # height
+                ]
+                widget.setGeometry(*new_geometry)  # Aplica a nova geometria
+
+        final_width = int(1078 * scale_factor)
+        final_height = int(614 * scale_factor)
+        
+        self.setFixedSize(final_width, final_height)
+        print(f"Widgets redimensionados para {scale_factor*100}% do tamanho original.")
+
+    def export_style(self):
+        """Exporta a geometria de todos os widgets para um arquivo JSON."""
+        widget_data = {}
+        
+        # Itera sobre todos os widgets da janela
+        for widget in self.findChildren(QWidget):  # Encontra todos os widgets filhos
+            widget_name = widget.objectName()  # Obtém o nome do widget
+            if widget_name:  # Apenas widgets nomeados
+                geometry = widget.geometry().getRect()  # Obtém a geometria (x, y, width, height)
+                widget_data[widget_name] = geometry  # Salva no dicionário
+
+        # Salva no arquivo JSON
+        with open("janela2.json", "w") as file:
+            json.dump(widget_data, file, indent=4)
 
     def verificarDF(self):
         df = self.Cnotas.pegarCNPJS()
@@ -377,11 +554,6 @@ class SegundaJanela(QMainWindow):
         else:
             print("Usuário escolheu 'Não'")
 
-    def salvarCNPJS(self):
-        options = QFileDialog.Options()
-        folder_path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
-        self.df.to_excel(f'{folder_path}/CNPJSnovos.xlsx', index=False)
-        QMessageBox.information(self, "SALVO", "ARQUIVO EXCEL SALVO.")
 
     def iniciar_pesquisa(self):
         self.podesalvar = False
@@ -447,7 +619,6 @@ if __name__ == "__main__":
     shared_mem = check_single_instance()
     # Cria e mostra a janela principal
     window = JanelaPrincipal()
-    window.show()
 
     # Inicia o carregamento das dependências em segundo plano
     thread = threading.Thread(target=carregar_dependencias)

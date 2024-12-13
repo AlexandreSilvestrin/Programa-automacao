@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>BUSCAR_CNPJS</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton[class=&quot;botoes1&quot;]{
@@ -25,7 +25,6 @@ background-color: qlineargradient(
 		stop:0.35 #366096,   /* Azul escuro (rgb(7, 0, 235)) */
         stop:1 #366096  /* Azul claro (rgb(0, 255, 255)) */
     );
-font-size: 18px;
 }
 
 QPushButton:hover[class=&quot;botoes1&quot;]{
@@ -35,7 +34,6 @@ border-width:2px;
 border-style:outset;
 border-color:black;
 background-color: #8cff57;
-font-size: 18px;
 }
 
 </string>
@@ -63,8 +61,7 @@ font-size: 18px;
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTableWidget::item { min-width: 50px; }
-</string>
+     <string notr="true"/>
     </property>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>45</number>
@@ -90,25 +87,6 @@ font-size: 18px;
     </property>
     <property name="text">
      <string>ATUALIZAR BANCO</string>
-    </property>
-    <property name="class" stdset="0">
-     <string>botoes1</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSalvarCNPJS">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>490</y>
-      <width>291</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>SALVAR PESQUISA</string>
     </property>
     <property name="class" stdset="0">
      <string>botoes1</string>
@@ -142,11 +120,6 @@ font-size: 18px;
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -163,11 +136,6 @@ font-size: 18px;
       <height>31</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -183,11 +151,6 @@ font-size: 18px;
       <width>291</width>
       <height>21</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
     </property>
     <property name="styleSheet">
      <string notr="true"/>

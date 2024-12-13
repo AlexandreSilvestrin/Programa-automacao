@@ -24,7 +24,7 @@ def gerarpdf(caminho):
         tipo = verifica_tipo_pdf(caminho)
         
         if 'Tipo 3' == tipo:
-            dfFINAL = pd.DataFrame(columns=['Data',	'Número',	'CNPJ',	'Tipo',	'Valor'])
+            dfFINAL = pd.DataFrame(columns=['Data',	'Número', 'CNPJ', 'Tipo', 'Valor'])
             return {"df": dfFINAL}
         elif tipo == 'Tipo 1':
             # Specify the area coordinates (left, top, right, bottom) for extraction
@@ -37,7 +37,8 @@ def gerarpdf(caminho):
             
             tabela.rename(columns={'Seg\rSocial': 'ValorSS'}, inplace=True)
             tabela.rename(columns={'Unnamed: 0': 'Data'}, inplace=True)
-            tabelaF = tabela[['Data', 'Número', 'CNPJ', 'PIS Retido',  'COFINS Retida', 'CSLL retida', 'IRRF', 'ValorSS']]
+            tabelaF = tabela[['Data', 'Número', 'CNPJ/CPF', 'PIS Retido',  'COFINS Retida', 'CSLL retida', 'IRRF', 'ValorSS']].copy()
+            tabelaF.rename(columns={'CNPJ/CPF': "CNPJ"}, inplace=True)
             tabelaF = tabelaF.replace(r'\r', ' ', regex=True)
             tabelaF = tabelaF.replace(r',', '', regex=True)
             tabelaF = tabelaF.replace(r'.', '')
@@ -112,6 +113,7 @@ def gerarpdf(caminho):
         erro = str(e)
         trace = traceback.format_exc()
         info = f'''INFO: HOUVE UM ERRO AO GERAR PDF\nErro: {erro}'''
+        print(info)
         return {
             "df": None,
             "info" : info,

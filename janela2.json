@@ -1,0 +1,68 @@
+{
+    "widget": [
+        0,
+        0,
+        100,
+        30
+    ],
+    "tableWidget": [
+        0,
+        0,
+        771,
+        611
+    ],
+    "qt_scrollarea_viewport": [
+        0,
+        0,
+        769,
+        0
+    ],
+    "qt_scrollarea_hcontainer": [
+        0,
+        0,
+        100,
+        30
+    ],
+    "qt_scrollarea_vcontainer": [
+        0,
+        0,
+        100,
+        30
+    ],
+    "btn_salvar_banco": [
+        780,
+        550,
+        291,
+        51
+    ],
+    "btnPesqAPI": [
+        780,
+        70,
+        291,
+        51
+    ],
+    "labelP": [
+        780,
+        160,
+        291,
+        31
+    ],
+    "labelP_2": [
+        780,
+        190,
+        291,
+        31
+    ],
+    "labelP_3": [
+        780,
+        130,
+        291,
+        21
+    ],
+    "btnPARAR": [
+        780,
+        10,
+        291,
+        51
+    ]
+}

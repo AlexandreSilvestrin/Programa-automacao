@@ -55,9 +55,6 @@ class Notas:
     def criar_pasta(self):
         ultimo_diretorio = os.path.basename(self.local)
         os.makedirs(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS', exist_ok=True)
-        if not os.path.exists(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx'):
-            teste = pd.DataFrame(columns=['Data', 'Número', 'CNPJ' , 'Vazia1', 'Vazia2','Valor', 'NF Nome', 'Tipo'])
-            teste.to_excel(f'{self.local_salvar}/{ultimo_diretorio}/NOTAS/TUDO.xlsx', index=False)
         self.local_salvar = f'{self.local_salvar}/{ultimo_diretorio}/NOTAS'
 
     def pradronizarxl(self, localsalvar):
@@ -115,16 +112,17 @@ class Notas:
                     if file in self.txtTomados:
                         file_path_tomados = os.path.join(root, file)
             
-            if 'tomados' in pasta.lower():
                 for root, dirs, files in os.walk(os.path.join(self.local, pasta)):
-                    for file in files:
-                        if any(substring in unidecode(file).lower() for substring in substrings) and file_path_pdf is None:
-                            file_path_pdf = os.path.join(root, file)
+                    if 'tomados' in root.lower():
+                        for file in files:
+                            if any(substring in unidecode(file).lower() for substring in substrings):
+                                file_path_pdf = os.path.join(root, file)
 
         
             caminhos = [pasta, file_path_tomados, file_path_entrada, file_path_pdf]
             lista_caminhos.append(caminhos)
         
+        print(lista_caminhos)
         return lista_caminhos
     
     def juntartomadospdf(self, df1, dfpdf):
@@ -213,7 +211,6 @@ class Notas:
     def lerarquivos(self, pasta,Ctomados, Centrada, Cpdf):
         dftomados, dfentrada, dfpdf = pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome'])
         empresa = pasta
-
         if Ctomados:
             dftomados = gerartomados(Ctomados)
             if dftomados['df'] is None:
