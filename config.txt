@@ -1,1 +1,0 @@
-{'caminhoNotas': 'C:/Users/Alexandre/Desktop/saida', 'fonte': 16, 'tema': 'claro', 'scale': 1}

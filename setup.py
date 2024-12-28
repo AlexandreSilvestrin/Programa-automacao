@@ -6,18 +6,18 @@ import os
 base = "Win32GUI"
 
 executables = [
-    Executable("app.py", base=base, icon="icon/XY.ico")
+    Executable("app.py", base=base, icon=r"resources\icons\XY.ico")
 ]
 
 build_exe_options = {
-    "packages": ["os", "pandas", "sys", "numpy", "requests", "unidecode"],
-    "include_files": ["interface/", "icon/","BANCOCNPJ.xlsx", "GUIA NOME.xlsx"]  # Inclui pastas necessárias
+    "packages": ["os", "pandas", "sys", "numpy", "requests", "unidecode", "json"],
+    "include_files": ["resources/"]  # Inclui pastas necessárias
 }
 
 setup(
     name="XY-auto",
-    version="1.5.8",
-    description="Seu Aplicativo Python compilado.",
+    version="1.6.2",
+    description="Programa de automacao // 11961594515 // https://github.com/AlexandreSilvestrin",
     options={"build_exe": build_exe_options},
     executables=executables
 )
