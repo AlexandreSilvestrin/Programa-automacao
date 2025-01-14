@@ -28,7 +28,8 @@ def check_single_instance():
 def excepthook(type, value, tb):
     # Salva o erro no log
     logging.error("Unhandled exception", exc_info=(type, value, tb))
-    
+
+    traceback.print_exception(type, value, tb)
     # Salva o traceback em um arquivo
     with open("erro_log.txt", "a") as f:
         f.write("Erro ocorrido:\n")
@@ -36,7 +37,6 @@ def excepthook(type, value, tb):
         f.write("\n" + "="*40 + "\n")
     
     # Exibe o erro em uma caixa de mensagem
-    print(traceback.format_exc())
     QMessageBox.critical(None, "Erro", f"Ocorreu um erro não tratado: {value}")
     
     # Chama o excepthook original

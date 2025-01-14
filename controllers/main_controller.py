@@ -108,11 +108,12 @@ class MainController(QMainWindow, Ui_MainWindow):
 
     def configurarNOTAS(self):
         self.localNotasSalvar.setText(self.config.get('caminhoNotas', ''))
-        self.btnFATtransformar.setVisible(False)
-        self.btnNotatransformar.setVisible(False)
-
+        self.btnNotatransformar.setEnabled(False)
+        self.btnNotatransformar.setToolTip("PESQUISAR CNPJ antes de continuar.")
         self.localNotas.setReadOnly(True)
+        self.localNotas.setToolTip("Pasta dos arquivos (LBR, SONDOTECNICA, PLANSERV)")
         self.localNotasSalvar.setReadOnly(True)
+        self.localNotasSalvar.setToolTip("Selecione uma pasta de saida geral apenas (o codigo ira criar a pasta da empresa e salvar os arquivos)")
         self.txtinfoNota.setReadOnly(True)
         
         self.btnNotatransformar.clicked.connect(self.transformarNotas)
@@ -123,11 +124,14 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.btnAbrPastaNota.clicked.connect(lambda : self.local_arq_salvar('notas', tipo='abrir'))
         self.btnCNPJ.clicked.connect(self.abrir_segunda_janela)
         self.btn_exportar.clicked.connect(self.exportarbanco)
+        self.btn_exportar.setToolTip("Salva uma copia do banco CNPJ")
         self.btn_importar.clicked.connect(self.importarbanco)
+        self.btn_importar.setToolTip("Adiciona novos dados no banco CNPJ")
         self.btnAbrPastaNota.setVisible(False)
 
     def configurarPRN(self):
         self.textoPRNarq.setReadOnly(True)
+        self.textoPRNarq.setToolTip("Pode ser um arquivo unico ou uma pasta contendo varias arquivos pra serem transformados")
         self.textoPRNlocal.setReadOnly(True)
         self.txtinfoPRN.setReadOnly(True)
 
@@ -261,7 +265,7 @@ class MainController(QMainWindow, Ui_MainWindow):
             return False, localNotas,  localNotasSalvar, mes, ano
 
     def transformarNotas(self):
-        self.btnNotatransformar.setVisible(False)
+        self.btnNotatransformar.setEnabled(False)
         try:
             verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
@@ -272,7 +276,6 @@ class MainController(QMainWindow, Ui_MainWindow):
             print(e)
 
     def transformarFAT(self):
-        self.btnFATtransformar.setVisible(False)
         try:
             verificacao ,localNotas,  localNotasSalvar, mes, ano = self.verificarCampos()
             if verificacao:
@@ -438,8 +441,7 @@ class MainController(QMainWindow, Ui_MainWindow):
             self.segunda_janela.setStyleSheet(self.styleSheet())
             self.segunda_janela.setFont(self.font())
             self.segunda_janela.load_and_resize_widget_geometry(self.scale)
-            self.btnFATtransformar.setVisible(True)
-            self.btnNotatransformar.setVisible(True)
+            self.btnNotatransformar.setEnabled(True)
         else:
             QMessageBox.critical(self, "Erro", "O caminho do arquivo não é válido ou não existe.")
 

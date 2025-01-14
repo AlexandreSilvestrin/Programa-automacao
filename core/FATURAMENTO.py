@@ -41,9 +41,7 @@ class Faturamento:
 
             padrao_cnpj = r'CGC/CNPJ: \d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}'
             cnpj_encontrado = re.search(padrao_cnpj, dados).group().replace('CGC/CNPJ: ', '')
-
             cnpj = cnpj_encontrado
-
             dados = dados.replace('\n                                                            ', '')
             dados = dados.replace('\n|   |     |                 |              |                |      |              |              |          I', 'I')
             dados = dados.replace('\n|   |     |                   |                 |      |                |          I', 'I')
@@ -101,10 +99,16 @@ class Faturamento:
             dfG['CONTRATO'] = dfG['CONTRATO'].apply(lambda x: x.replace(' ', '').replace('-', '').replace('.', '').strip())
             dfG['RAZÃO SOCIAL'] = dfG['RAZÃO SOCIAL'].apply(lambda x: x.upper())
             linhaG = dfG[dfG['CNPJ DO CONSÓRCIO'] == cnpj.strip()].reset_index( drop=True)
+
+            if linhaG.empty:
+                print('cnpj nao encontrado')
+                with open(f"{self.caminhoS}/CNPJ-NAO-ENCONTRADO_{cnpj.replace('/', '').replace('.', '')}.txt", "w") as arq:
+                    arq.write(f'A empresa do CNPJS {cnpj} nao possui no banco de faturamento')
+                return
+
             linhaG = linhaG.iloc[0].str.upper()
             linhaG = linhaG.to_dict()
             
-
             lista = linhaG['PORCENTAGEM POR CONSORCIADA'].replace('%', '').replace(',', '.').split()
             listaP = [lista[i:i + 2] for i in range(0, len(lista), 2)]
             listaP = [[n, int(p)] for n, p in listaP]
@@ -197,11 +201,11 @@ class Faturamento:
             workbook.save(f'{caminhosalvar}/{pastaP} FATURAMENTO {mes}.{ano} {linhaG["CONTRATO"]}.xlsx')
 
         except Exception as e:
+            print('erro no faturamento.py linha 200')
             erro = str(e)
             erroF = traceback.format_exc()
-            nome = caminho.split(os.sep)[-3]
-            info = f'''INFO: ERRO AO GERAR FATURAMENTO\n Empresa: {nome}\nErro: {erro}'''
-            with open(f"{self.caminhoS}/ERRO_{nome}.txt", "w") as arq:
+            info = f'''INFO: ERRO AO GERAR FATURAMENTO\n Empresa: {cnpj}\nErro: {erro}'''
+            with open(f"{self.caminhoS}/ERRO_{cnpj.replace('/', '').replace('.', '')}.txt", "w") as arq:
                 arq.write(f'{info}\n\n TRACEBACK:\n{erroF}')
             self.printarInformacoes(info)
 

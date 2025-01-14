@@ -471,7 +471,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "XY-auto"))
-        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.2"))
+        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.3"))
         self.label_8.setText(_translate("MainWindow", "NOTAS+FATURAMENTO"))
         self.btnNotatransformar.setText(_translate("MainWindow", "GERAR NOTAS"))
         self.btnNotatransformar.setProperty("class", _translate("MainWindow", "botoes1"))
