@@ -1,4 +1,4 @@
-# **XY-auto**
+# **XY-auto v1.6.4**
 
 Este é um projeto desenvolvido para uma empresa de contabilidade para automação e manipulação de dados, com interface gráfica amigável e suporte a várias funcionalidades, como leitura e conversão de arquivos.
 

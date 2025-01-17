@@ -17,7 +17,7 @@ def organizerdf(df1, df2):
 
 def gerartomados(caminhoT):
     try:
-        with open(caminhoT, 'r') as txttomados:
+        with open(caminhoT, 'r', encoding='latin-1') as txttomados:
             dados = txttomados.read().replace(',', '').replace('.', '')
         
         # r'-{13}.*?-{13}'  - oque sera removido  {13} quantidade . qualquer caracter * zero ou mais aparicoes ? pega sempre as primeiras aparicoes// re.DOTALL o . detecta a quebra de linha
@@ -60,6 +60,10 @@ def gerartomados(caminhoT):
         erro = str(e)
         trace = traceback.format_exc()
         info = f'''INFO: HOUVE UM ERRO AO GERAR TOMADOS\nErro: {erro}'''
+        print(trace)
+        
+        print('#'*30)
+
         return {
             "df": None,
             "info" : info,
@@ -70,4 +74,4 @@ def gerartomados(caminhoT):
 
 
 if __name__ == "__main__": 
-    print(gerartomados(r"C:\Users\Alexandre\Downloads\drive-download-20241010T171031Z-001\LBR\ARTESP8- Consorcio LBR Modera\Serv tomados\I56092024.txt"))
+    print(gerartomados(r"C:\Users\Alexandre\Desktop\lbr\sehab-6\tomados\I56122024.txt"))

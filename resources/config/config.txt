@@ -1,1 +1,1 @@
-{'fonte': 12, 'scale': 1, 'tema': 'escuro'}
+{'fonte': 12, 'scale': 1, 'tema': 'escuro', 'caminhoNotas': 'C:/Users/Alexandre/Desktop/Nova pasta'}
