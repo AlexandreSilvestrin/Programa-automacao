@@ -3,6 +3,7 @@ class Caminhos:
     CAMINHO_CONFIG = r"resources\config\config.txt"
     CAMINHO_JANELA1 = r"resources\config\janela1.json"
     CAMINHO_JANELA2 = r"resources\config\janela2.json"
+    CAMINHO_JANELA3 = r"resources\config\janela3.json"
     CAMINHO_BANCO_CNPJ = r"resources\data\BANCOCNPJ.xlsx"
     CAMINHO_GUIA_NOME = r"resources\data\GUIA NOME.xlsx"
     CAMINHO_ICON = r"resources\icons\XY.ico"

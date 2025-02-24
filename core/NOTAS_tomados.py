@@ -55,7 +55,7 @@ def gerartomados(caminhoT):
         return {
             "df":dadosF
             }
-    
+
     except Exception as e:
         erro = str(e)
         trace = traceback.format_exc()

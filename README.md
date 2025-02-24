@@ -13,9 +13,14 @@ PROGRAMA_MVC/
 │
 ├── .venv/             # Ambiente virtual do Python
 ├── controllers/       # Controladores que gerenciam as interações entre interface e lógica
+│   ├── abas_main/
+│   │   ├── aba_notas_fat.py
+│   │   ├── aba_prn.py
+│   │   └── aba_razao.py
 │   ├── config_controller.py
 │   ├── main_controller.py
-│   └── sec_controller.py
+│   ├── sec_controller.py
+│   └── ter_controller.py
 ├── core/              # As funções de manipulação de arquivos
 │   ├── CNPJ_API.py
 │   ├── FATURAMENTO.py
@@ -26,13 +31,15 @@ PROGRAMA_MVC/
 │   ├── PRN_T.py
 │   └── RAZAO_resumo.py
 ├── models/            # Modelos de dados e manipulação de banco
-│   └── banco_cnpj.py
+│   ├── banco_cnpj.py
+│   └── banco_fat.py
 ├── resources/         # Recursos estáticos e arquivos auxiliares
 │   ├── config/        # Configurações do sistema
 │   │   ├── caminhos.py
 │   │   ├── config.txt
 │   │   ├── janela1.json
-│   │   └── janela2.json
+│   │   ├── janela2.json
+│   │   └── janela3.json
 │   ├── data/          # Bases de dados e arquivos de suporte
 │   │   ├── BANCOCNPJ.xlsx
 │   │   └── GUIA_NOME.xlsx
@@ -41,7 +48,8 @@ PROGRAMA_MVC/
 │   ├── layouts/       # Arquivos de layout e UI gerados
 │   │   ├── configW.py
 │   │   ├── mainW.py
-│   │   └── secW.py
+│   │   ├── secW.py
+│   │   └── tercW.py
 │   └── styles/        # Arquivos de estilo (CSS)
 │       ├── dark.css
 │       └── light.css
@@ -76,7 +84,8 @@ Abaixo está uma explicação sobre as principais pastas e arquivos:
 ### **Diretórios**
 - **`controllers/`**: Contém os controladores responsáveis por gerenciar a lógica da interface gráfica (PyQt5).  
   - **`main_controller.py`**: Controlador da janela principal.  
-  - **`sec_controller.py`**: Controlador da janela secundária.  
+  - **`sec_controller.py`**: Controlador da janela de CNPJ_notas.  
+  - **`ter_controller.py`**: Controlador da janela CNPJ_fat. 
 - **`core/`**: Implementa as funções principais do sistema, como leitura de arquivos, geração de PRNs e integração com APIs.  
   - **Exemplo**:  
     - `NOTAS_entrada.py`: Processa notas fiscais de entrada.  

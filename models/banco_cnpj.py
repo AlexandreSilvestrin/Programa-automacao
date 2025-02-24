@@ -50,8 +50,22 @@ class CNPJModel:
         existing_df = CNPJModel.load_data()
 
         print(existing_df.shape)
+
+    def exportar_db(folder_path):
+        dfbanco = CNPJModel.load_data()
+        dfbanco = dfbanco[['CNPJ', 'Nome']]
+        dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
+        dfbanco.to_excel(f'{folder_path}/BANCOCNPJ.xlsx', index=False)
+
+    def importar_db(folder_path):
+        dfbanco = pd.read_excel(folder_path, dtype=str)
+        dfbanco = dfbanco[['CNPJ', 'Nome']]
+        dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
+        CNPJModel.add_new_data(dfbanco)
     
+
 if __name__ == '__main__':
-    
     banco = CNPJModel()
-    banco.info_data()
+    df = pd.read_excel(Caminhos.CAMINHO_BANCO_CNPJ)
+    df['CNPJ'] = df['CNPJ'].apply(lambda x: str(x).zfill(14))
+    df.to_excel(Caminhos.CAMINHO_BANCO_CNPJ, index=False)

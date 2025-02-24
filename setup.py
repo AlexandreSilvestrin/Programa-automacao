@@ -1,6 +1,4 @@
 from cx_Freeze import setup, Executable
-import sys
-import os
 
 # Adiciona o caminho dos arquivos adicionais
 base = "Win32GUI"
@@ -16,7 +14,7 @@ build_exe_options = {
 
 setup(
     name="XY-auto",
-    version="1.6.2",
+    version="1.6.5",
     description="Programa de automacao // 11961594515 // https://github.com/AlexandreSilvestrin",
     options={"build_exe": build_exe_options},
     executables=executables

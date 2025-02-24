@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'resources\layouts\mainW.ui'
+# Form implementation generated from reading ui file 'mainW.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -212,6 +212,10 @@ class Ui_MainWindow(object):
         self.btn_importar.setGeometry(QtCore.QRect(790, 440, 201, 41))
         self.btn_importar.setStyleSheet("")
         self.btn_importar.setObjectName("btn_importar")
+        self.btn_porcent = QtWidgets.QPushButton(self.pagNotas)
+        self.btn_porcent.setGeometry(QtCore.QRect(790, 500, 201, 41))
+        self.btn_porcent.setStyleSheet("")
+        self.btn_porcent.setObjectName("btn_porcent")
         self.stackedWidget.addWidget(self.pagNotas)
         self.pagPRN = QtWidgets.QWidget()
         self.pagPRN.setObjectName("pagPRN")
@@ -313,8 +317,27 @@ class Ui_MainWindow(object):
         self.btnRAZAOlocal.setStyleSheet("")
         self.btnRAZAOlocal.setObjectName("btnRAZAOlocal")
         self.rb_razao = QtWidgets.QRadioButton(self.pagRazao)
-        self.rb_razao.setGeometry(QtCore.QRect(650, 150, 121, 21))
+        self.rb_razao.setGeometry(QtCore.QRect(20, 150, 111, 41))
         self.rb_razao.setObjectName("rb_razao")
+        self.buttonGroup = QtWidgets.QButtonGroup(MainWindow)
+        self.buttonGroup.setObjectName("buttonGroup")
+        self.buttonGroup.addButton(self.rb_razao)
+        self.rb_razao_dfc = QtWidgets.QRadioButton(self.pagRazao)
+        self.rb_razao_dfc.setGeometry(QtCore.QRect(140, 150, 91, 41))
+        self.rb_razao_dfc.setObjectName("rb_razao_dfc")
+        self.buttonGroup.addButton(self.rb_razao_dfc)
+        self.razao_txt_contras = QtWidgets.QLineEdit(self.pagRazao)
+        self.razao_txt_contras.setEnabled(True)
+        self.razao_txt_contras.setGeometry(QtCore.QRect(500, 150, 271, 41))
+        self.razao_txt_contras.setStyleSheet("")
+        self.razao_txt_contras.setText("")
+        self.razao_txt_contras.setObjectName("razao_txt_contras")
+        self.label_razao2_2 = QtWidgets.QLabel(self.pagRazao)
+        self.label_razao2_2.setGeometry(QtCore.QRect(330, 150, 161, 41))
+        self.label_razao2_2.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.label_razao2_2.setStyleSheet("")
+        self.label_razao2_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_razao2_2.setObjectName("label_razao2_2")
         self.stackedWidget.addWidget(self.pagRazao)
         self.pagRateio = QtWidgets.QWidget()
         self.pagRateio.setObjectName("pagRateio")
@@ -324,7 +347,7 @@ class Ui_MainWindow(object):
         self.btncss.setObjectName("btncss")
         self.stackedWidget.addWidget(self.pagRateio)
         self.btnNotas = QtWidgets.QPushButton(self.centralwidget)
-        self.btnNotas.setGeometry(QtCore.QRect(10, 10, 151, 51))
+        self.btnNotas.setGeometry(QtCore.QRect(10, 10, 141, 51))
         self.btnNotas.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "border-width:2px;\n"
@@ -348,7 +371,7 @@ class Ui_MainWindow(object):
 "}")
         self.btnNotas.setObjectName("btnNotas")
         self.btnPRN = QtWidgets.QPushButton(self.centralwidget)
-        self.btnPRN.setGeometry(QtCore.QRect(170, 10, 151, 51))
+        self.btnPRN.setGeometry(QtCore.QRect(160, 10, 141, 51))
         self.btnPRN.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "border-width:2px;\n"
@@ -373,7 +396,7 @@ class Ui_MainWindow(object):
         self.btnPRN.setObjectName("btnPRN")
         self.btnRazao = QtWidgets.QPushButton(self.centralwidget)
         self.btnRazao.setEnabled(True)
-        self.btnRazao.setGeometry(QtCore.QRect(330, 10, 151, 51))
+        self.btnRazao.setGeometry(QtCore.QRect(310, 10, 141, 51))
         self.btnRazao.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "border-width:2px;\n"
@@ -398,7 +421,8 @@ class Ui_MainWindow(object):
         self.btnRazao.setObjectName("btnRazao")
         self.btnRateio = QtWidgets.QPushButton(self.centralwidget)
         self.btnRateio.setEnabled(False)
-        self.btnRateio.setGeometry(QtCore.QRect(490, 10, 151, 51))
+        self.btnRateio.setVisible(False)
+        self.btnRateio.setGeometry(QtCore.QRect(630, 10, 141, 51))
         self.btnRateio.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
 "border-width:2px;\n"
@@ -422,7 +446,7 @@ class Ui_MainWindow(object):
         self.btnRateio.setText("")
         self.btnRateio.setObjectName("btnRateio")
         self.btnVoltar = QtWidgets.QPushButton(self.centralwidget)
-        self.btnVoltar.setGeometry(QtCore.QRect(770, 10, 151, 51))
+        self.btnVoltar.setGeometry(QtCore.QRect(780, 10, 141, 51))
         self.btnVoltar.setStyleSheet("QPushButton{\n"
 "color: rgb(9, 9, 9);\n"
 "border-radius: 15px;\n"
@@ -471,7 +495,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "XY-auto"))
-        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.3"))
+        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.5"))
         self.label_8.setText(_translate("MainWindow", "NOTAS+FATURAMENTO"))
         self.btnNotatransformar.setText(_translate("MainWindow", "GERAR NOTAS"))
         self.btnNotatransformar.setProperty("class", _translate("MainWindow", "botoes1"))
@@ -523,6 +547,8 @@ class Ui_MainWindow(object):
         self.btnFATtransformar.setProperty("class", _translate("MainWindow", "botoes1"))
         self.btn_importar.setText(_translate("MainWindow", "IMPORTAR BANCO"))
         self.btn_importar.setProperty("class", _translate("MainWindow", "botoes1"))
+        self.btn_porcent.setText(_translate("MainWindow", "ADICIONAR PORCENTAGENS"))
+        self.btn_porcent.setProperty("class", _translate("MainWindow", "botoes1"))
         self.label_2.setText(_translate("MainWindow", "Transformar PRN"))
         self.btnPRNarq.setText(_translate("MainWindow", "SELECIONAR ARQ"))
         self.btnPRNarq.setProperty("class", _translate("MainWindow", "botoes2"))
@@ -552,6 +578,8 @@ class Ui_MainWindow(object):
         self.btnRAZAOlocal.setProperty("teste", _translate("MainWindow", "kk"))
         self.btnRAZAOlocal.setProperty("class", _translate("MainWindow", "botoes2"))
         self.rb_razao.setText(_translate("MainWindow", "RESUMO"))
+        self.rb_razao_dfc.setText(_translate("MainWindow", "DFC"))
+        self.label_razao2_2.setText(_translate("MainWindow", "numeros contras:"))
         self.btncss.setText(_translate("MainWindow", "EXPORTA CSS"))
         self.btncss.setProperty("class", _translate("MainWindow", "botoes1"))
         self.btnNotas.setText(_translate("MainWindow", "NOTAS+FAT"))

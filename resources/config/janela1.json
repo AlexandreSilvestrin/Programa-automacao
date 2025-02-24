@@ -11,6 +11,120 @@
         1011,
         821
     ],
+    "pagRazao": [
+        0,
+        0,
+        640,
+        480
+    ],
+    "label_RAZAO": [
+        10,
+        10,
+        991,
+        31
+    ],
+    "razao_arq": [
+        20,
+        100,
+        761,
+        41
+    ],
+    "btnAbrPastaRazao": [
+        790,
+        700,
+        201,
+        41
+    ],
+    "btnRAZAOpasta": [
+        790,
+        80,
+        201,
+        41
+    ],
+    "btnRAZAOtransformar": [
+        790,
+        760,
+        201,
+        41
+    ],
+    "txtinfoRAZAO": [
+        20,
+        310,
+        761,
+        491
+    ],
+    "qt_scrollarea_viewport": [
+        0,
+        0,
+        640,
+        480
+    ],
+    "qt_scrollarea_hcontainer": [
+        0,
+        0,
+        100,
+        30
+    ],
+    "qt_scrollarea_vcontainer": [
+        0,
+        0,
+        100,
+        30
+    ],
+    "btnRAZAOarq": [
+        790,
+        130,
+        201,
+        41
+    ],
+    "label_22": [
+        10,
+        220,
+        771,
+        31
+    ],
+    "label_razao2": [
+        10,
+        70,
+        771,
+        31
+    ],
+    "razao_local": [
+        20,
+        250,
+        761,
+        41
+    ],
+    "btnRAZAOlocal": [
+        790,
+        250,
+        201,
+        41
+    ],
+    "rb_razao": [
+        20,
+        150,
+        111,
+        41
+    ],
+    "rb_razao_dfc": [
+        140,
+        150,
+        91,
+        41
+    ],
+    "razao_txt_contras": [
+        500,
+        150,
+        271,
+        41
+    ],
+    "label_razao2_2": [
+        330,
+        150,
+        161,
+        41
+    ],
     "pagPRN": [
         0,
         0,
@@ -71,24 +185,6 @@
         761,
         491
     ],
-    "qt_scrollarea_viewport": [
-        0,
-        0,
-        640,
-        480
-    ],
-    "qt_scrollarea_hcontainer": [
-        0,
-        0,
-        100,
-        30
-    ],
-    "qt_scrollarea_vcontainer": [
-        0,
-        0,
-        100,
-        30
-    ],
     "btnAbrPasta": [
         790,
         700,
@@ -100,84 +196,6 @@
         80,
         201,
         41
-    ],
-    "pagRazao": [
-        3,
-        3,
-        1005,
-        815
-    ],
-    "label_RAZAO": [
-        10,
-        10,
-        991,
-        31
-    ],
-    "razao_arq": [
-        20,
-        100,
-        761,
-        41
-    ],
-    "btnAbrPastaRazao": [
-        790,
-        700,
-        201,
-        41
-    ],
-    "btnRAZAOpasta": [
-        790,
-        80,
-        201,
-        41
-    ],
-    "btnRAZAOtransformar": [
-        790,
-        760,
-        201,
-        41
-    ],
-    "txtinfoRAZAO": [
-        20,
-        310,
-        761,
-        491
-    ],
-    "btnRAZAOarq": [
-        790,
-        130,
-        201,
-        41
-    ],
-    "label_22": [
-        10,
-        220,
-        771,
-        31
-    ],
-    "label_razao2": [
-        10,
-        70,
-        771,
-        31
-    ],
-    "razao_local": [
-        20,
-        250,
-        761,
-        41
-    ],
-    "btnRAZAOlocal": [
-        790,
-        250,
-        201,
-        41
-    ],
-    "rb_razao": [
-        650,
-        150,
-        121,
-        21
     ],
     "pagNotas": [
         3,
@@ -293,6 +311,12 @@
         201,
         41
     ],
+    "btn_porcent": [
+        790,
+        500,
+        201,
+        41
+    ],
     "page": [
         3,
         3,
@@ -320,31 +344,31 @@
     "btnNotas": [
         10,
         10,
-        151,
+        141,
         51
     ],
     "btnPRN": [
-        170,
+        160,
         10,
-        151,
+        141,
         51
     ],
     "btnRazao": [
-        330,
+        310,
         10,
-        151,
+        141,
         51
     ],
     "btnRateio": [
-        490,
+        630,
         10,
-        151,
+        141,
         51
     ],
     "btnVoltar": [
-        770,
+        780,
         10,
-        151,
+        141,
         51
     ],
     "btnconfig": [

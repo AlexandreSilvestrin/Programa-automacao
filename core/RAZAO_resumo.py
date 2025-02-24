@@ -14,7 +14,6 @@ class RAZAO:
             diretorio = os.path.dirname(self.local)
             return self.gerar_resumo(diretorio, self.locals, nome)
 
-
         elif os.path.isdir(self.local):
             lista = os.listdir(self.local)
             for arquivo in lista:
@@ -85,8 +84,6 @@ class RAZAO:
 
         linhas_organizadas = re.sub(r'\n {44}', '', '\n'.join(texto_sem_cabecalho), flags=re.DOTALL)
         linhas_organizadas = linhas_organizadas.split('\n')
-
-
 
         for e, linha in enumerate(linhas_organizadas):
             if len(linha.split()) < 4:

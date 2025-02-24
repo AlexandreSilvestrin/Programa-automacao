@@ -98,7 +98,7 @@ class Faturamento:
             dfG.dropna(inplace=True)
             dfG['CONTRATO'] = dfG['CONTRATO'].apply(lambda x: x.replace(' ', '').replace('-', '').replace('.', '').strip())
             dfG['RAZÃO SOCIAL'] = dfG['RAZÃO SOCIAL'].apply(lambda x: x.upper())
-            linhaG = dfG[dfG['CNPJ DO CONSÓRCIO'] == cnpj.strip()].reset_index( drop=True)
+            linhaG = dfG[dfG['CNPJ'] == cnpj.strip()].reset_index( drop=True)
 
             if linhaG.empty:
                 print('cnpj nao encontrado')
@@ -143,21 +143,21 @@ class Faturamento:
                             linha_total_porcent = {'numero': 1, 'valor': round(int(irrf)*(porcent/100)), 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"IR RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {nome}"}
                             listadf.append(linha_total_porcent)
 
-                    if ret == 'PIS':
+                    elif ret == 'PIS':
                         linha_pis = {'numero': 1, 'valor': pis, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"PIS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
                         listadf.append(linha_pis)
                         for nome, porcent in listaP:
                             linha_total_porcent = {'numero': 1, 'valor': round(int(pis)*(porcent/100)), 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"PIS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {nome}"}
                             listadf.append(linha_total_porcent)
                     
-                    if ret == 'COFINS':
+                    elif ret == 'COFINS':
                         linha_cofins = {'numero': 1, 'valor': cofins, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"COFINS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
                         listadf.append(linha_cofins)
                         for nome, porcent in listaP:
                             linha_total_porcent = {'numero': 1, 'valor': round(int(cofins)*(porcent/100)), 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"COFINS RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {nome}"}
                             listadf.append(linha_total_porcent)
                     
-                    if ret == 'CSLL':
+                    elif ret == 'CSLL':
                         linha_csll = {'numero': 1, 'valor': csll, 'data': f'{dia}/{mes}/{ano}', 'vazio': '', 'nome': f"CSLL RETIDO CF. NF {numero} PRESTAÇÃO DE SERVIÇO {linhaG['RAZÃO SOCIAL']}- {linhaG['CONTRATO']}"}
                         listadf.append(linha_csll)
                         for nome, porcent in listaP:

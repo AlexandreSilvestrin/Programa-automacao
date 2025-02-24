@@ -24,7 +24,6 @@ def check_single_instance():
         shared_mem.create(1)
     return shared_mem
 
-
 def excepthook(type, value, tb):
     # Salva o erro no log
     logging.error("Unhandled exception", exc_info=(type, value, tb))
@@ -44,6 +43,7 @@ def excepthook(type, value, tb):
 
 
 if __name__ == "__main__":
+    
     # Configura o manipulador global de exceções
     sys.excepthook = excepthook
 

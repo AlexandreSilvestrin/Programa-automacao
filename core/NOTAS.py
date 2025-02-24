@@ -11,18 +11,6 @@ from models.banco_cnpj import CNPJModel
 
 warnings.filterwarnings("ignore", category=FutureWarning, message="errors='ignore' is deprecated")
 
-def exportar_db(folder_path):
-    dfbanco = CNPJModel.load_data()
-    dfbanco = dfbanco[['CNPJ', 'Nome']]
-    dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
-    dfbanco.to_excel(f'{folder_path}/BANCOCNPJ.xlsx', index=False)
-
-def importar_db(folder_path):
-    dfbanco = pd.read_excel(folder_path, dtype=str)
-    dfbanco = dfbanco[['CNPJ', 'Nome']]
-    dfbanco['CNPJ'] = dfbanco['CNPJ'].apply(lambda x: str(x).zfill(14))
-    CNPJModel.add_new_data(dfbanco)
-
 class Notas:
     def __init__(self, local, local_salvar, mes, ano):
         self.local = local

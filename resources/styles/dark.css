@@ -1,5 +1,6 @@
 QMainWindow {
     background-color: rgb(52, 53, 65);
+    color: black
 }
 
 QStackedWidget {
@@ -51,7 +52,7 @@ QLineEdit {
 QLabel {
     border-radius: 15px;
     border-style: outset;
-    color: rgb(209, 209, 209);
+    color: rgb(0, 0, 0);
 }
 
 QTextEdit{

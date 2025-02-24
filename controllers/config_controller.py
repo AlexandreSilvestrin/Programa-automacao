@@ -21,7 +21,6 @@ class Configuracoes(QDialog, Ui_Dialog):
         self.btnfonteM.clicked.connect(lambda: self.parent.ajustar_fonte(delta=-2))
         self.label_fonte.setText(f'{self.parent.font().pointSize()}')
 
-
     def moverJanelaConfiguracoes(self):
         button_pos = self.parent.btnconfig.pos()
         button_width = self.parent.btnconfig.width()  # Largura do botão

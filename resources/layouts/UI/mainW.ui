@@ -133,7 +133,7 @@ border-radius:5px;
 </string>
       </property>
       <property name="text">
-       <string>PROGRAMA DE AUTOMACAO V1.6.2</string>
+       <string>PROGRAMA DE AUTOMACAO V1.6.5</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -577,6 +577,25 @@ p, li { white-space: pre-wrap; }
        <string>botoes1</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="btn_porcent">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>500</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>ADICIONAR PORCENTAGENS</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes1</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="pagPRN">
      <widget class="QLabel" name="label_2">
@@ -972,14 +991,74 @@ p, li { white-space: pre-wrap; }
      <widget class="QRadioButton" name="rb_razao">
       <property name="geometry">
        <rect>
-        <x>650</x>
+        <x>20</x>
         <y>150</y>
-        <width>121</width>
-        <height>21</height>
+        <width>111</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
        <string>RESUMO</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroup</string>
+      </attribute>
+     </widget>
+     <widget class="QRadioButton" name="rb_razao_dfc">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>150</y>
+        <width>91</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DFC</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">buttonGroup</string>
+      </attribute>
+     </widget>
+     <widget class="QLineEdit" name="razao_txt_contras">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>150</y>
+        <width>271</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_razao2_2">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>150</y>
+        <width>161</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>numeros contras:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </widget>
@@ -1010,7 +1089,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>151</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -1044,9 +1123,9 @@ background-color: #8cff57;
    <widget class="QPushButton" name="btnPRN">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>160</x>
       <y>10</y>
-      <width>151</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -1083,9 +1162,9 @@ background-color: #8cff57;
     </property>
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>310</x>
       <y>10</y>
-      <width>151</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -1122,9 +1201,9 @@ background-color: #8cff57;
     </property>
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>630</x>
       <y>10</y>
-      <width>151</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -1157,9 +1236,9 @@ background-color: #8cff57;
    <widget class="QPushButton" name="btnVoltar">
     <property name="geometry">
      <rect>
-      <x>770</x>
+      <x>780</x>
       <y>10</y>
-      <width>151</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -1225,4 +1304,7 @@ background-color: #8cff57;
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>
