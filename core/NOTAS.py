@@ -93,7 +93,8 @@ class Notas:
         
             caminhos = [pasta, file_path_tomados, file_path_entrada, file_path_pdf]
             lista_caminhos.append(caminhos)
-        
+            print(caminhos, '\n')
+
         return lista_caminhos
     
     def juntartomadospdf(self, df1, dfpdf):
@@ -164,6 +165,7 @@ class Notas:
         return dftomadosCNPJ
 
     def lerarquivos(self, pasta,Ctomados, Centrada, Cpdf):
+        print(pasta)
         dftomados, dfentrada, dfpdf = pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome']), pd.DataFrame(columns=['Data', 'Número', 'CNPJ', 'Valor', 'Nome'])
         empresa = pasta
         if Ctomados:
@@ -171,8 +173,12 @@ class Notas:
             if dftomados['df'] is None:
                 self.salvarerro(dftomados, empresa)
                 return empresa, dftomados, dfpdf, dfentrada, False
-            else:
+            elif isinstance(dftomados['df'], pd.DataFrame):
                 dftomados = dftomados['df']
+            elif dftomados['df'] == 'SEM MOVIMENTO':
+                self.printarInformacoes(f'''{empresa} SEM MOVIMENTO''')
+                dftomados = pd.DataFrame()
+
         if Centrada:
             dfentrada = gerarentrada(Centrada)
             if dfentrada['df'] is None:
@@ -235,10 +241,10 @@ class NotasUI(Notas):
 
 
 if __name__ == "__main__": 
-    base_directory = r'C:/Users/Alexandre/Desktop/drive-download-20240611T173809Z-001/LBR'
+    base_directory = r'C:/Users/Alexandre/Downloads/drive-download-20250610T175842Z-1-001/PLANSERVI'
     saida = "C:/Users/Alexandre/Desktop/Nova pasta (2)"
-    txtentrada = 'E052024.txt'
-    txttomados = 'I56052024.txt'
+    mes = '05'
+    ano = '2025'
 
-    notas = Notas(base_directory,  saida,txttomados, txtentrada)
+    notas = Notas(base_directory,  saida, mes, ano)
     #preciso terminas de colocar no UI agora , ele precisa das mesma coisa o local de salvar o local dos arquivos e os dois nomes dos arquivos

@@ -1,0 +1,149 @@
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 151, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 171, in lerarquivos
+    if dftomados['df'] is None:
+       ~~~~~~~~~^^^^^^
+TypeError: tuple indices must be integers or slices, not str
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 151, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 171, in lerarquivos
+    if dftomados['df'] is None:
+       ~~~~~~~~~^^^^^^
+TypeError: tuple indices must be integers or slices, not str
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 152, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 176, in lerarquivos
+    elif dftomados['df'] == 'SEM MOVIMENTO':
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexandre\AppData\Roaming\Python\Python313\site-packages\pandas\core\generic.py", line 1577, in __nonzero__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 152, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 176, in lerarquivos
+    elif dftomados['df'] == 'SEM MOVIMENTO':
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexandre\AppData\Roaming\Python\Python313\site-packages\pandas\core\generic.py", line 1577, in __nonzero__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 152, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 176, in lerarquivos
+    elif dftomados['df'] == 'SEM MOVIMENTO':
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexandre\AppData\Roaming\Python\Python313\site-packages\pandas\core\generic.py", line 1577, in __nonzero__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 152, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 178, in lerarquivos
+    elif dftomados['df'] == 'SEM MOVIMENTO':
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alexandre\AppData\Roaming\Python\Python313\site-packages\pandas\core\generic.py", line 1577, in __nonzero__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+========================================
+Erro ocorrido:
+Traceback (most recent call last):
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\abas_main\aba_notas_fat.py", line 85, in abrir_segunda_janela
+    self.main.segunda_janela = SegundaJanela(Cnotas)
+                               ~~~~~~~~~~~~~^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 20, in __init__
+    self.df = self.verificarDF()
+              ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\controllers\sec_controller.py", line 80, in verificarDF
+    df = self.Cnotas.pegarCNPJS()
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 152, in pegarCNPJS
+    empresa, dftomados, dfpdf, dfentrada, cond = self.lerarquivos(pasta, Ctomados, Centrada, Cpdf)
+                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Alexandre\Documents\GitHub\Programa-automacao\core\NOTAS.py", line 199, in lerarquivos
+    if dftomados.empty:
+       ^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'empty'
+
+========================================

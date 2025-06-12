@@ -20,6 +20,11 @@ def gerartomados(caminhoT):
         with open(caminhoT, 'r', encoding='latin-1') as txttomados:
             dados = txttomados.read().replace(',', '').replace('.', '')
         
+
+        if "SEM MOVIMENTO" in dados:
+            print('sem movimento')
+            return {"df": 'SEM MOVIMENTO'}
+
         # r'-{13}.*?-{13}'  - oque sera removido  {13} quantidade . qualquer caracter * zero ou mais aparicoes ? pega sempre as primeiras aparicoes// re.DOTALL o . detecta a quebra de linha
         linhas_organizadas = re.sub(r'\n {30}', '', dados, flags=re.DOTALL).split('\n')
         linhas_selecionadas = []
