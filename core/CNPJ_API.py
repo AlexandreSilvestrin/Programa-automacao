@@ -24,7 +24,7 @@ class PesquisaAPIThread(QThread):
                         dados_json = teste.json()
                         return dados_json['nome']
                     except:
-                        return 'NaN'
+                        return 'NAO ENCONTRADO'
                 else:
                     teste2 = requests.get(f"https://brasilapi.com.br/api/cnpj/v1/{cnpj}")
                     if teste2.status_code == 200:
@@ -32,17 +32,19 @@ class PesquisaAPIThread(QThread):
                             dados_json = teste2.json()
                             return dados_json['razao_social']
                         except:
-                            return 'NaN'
+                            return 'NAO ENCONTRADO'
                     else:
                         print('tentando novamente em 30 segundos')
                         time.sleep(30)
                         tentativas += 1
 
             print('execucao parada ou encerrada')
-            return 'NaN'
+            return 'NAO ENCONTRADO'
 
         for i, cnpj in enumerate(self.df['CNPJ']):
             print(f'Faltam {len(self.df) - i} CNPJs para pesquisar')
+            cnpj = cnpj.strip()
+            print(cnpj)
             nome = consultarAPI(cnpj)
             self.resultado_encontrado.emit(i, nome, len(self.df))
         else:
