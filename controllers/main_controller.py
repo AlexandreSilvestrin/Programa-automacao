@@ -9,6 +9,7 @@ from resources.layouts.mainW import Ui_MainWindow
 from controllers.abas_main.aba_prn import ABA_PRN
 from controllers.abas_main.aba_razao import ABA_RAZAO
 from controllers.abas_main.aba_notas_fat import ABA_NOTAS_FAT
+from controllers.abas_main.aba_dimob import ABA_DIMOB
 
 class Worker(QThread):
     def run(self):
@@ -103,6 +104,8 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.btnPRN.clicked.connect(lambda: self.mostrar_pagina(2))
         self.btnRazao.clicked.connect(lambda: self.mostrar_pagina(3))
         self.btnRateio.clicked.connect(lambda: self.mostrar_pagina(4))
+        self.btnDimob.clicked.connect(lambda: self.mostrar_pagina(5))
+        self.btnRateio.setVisible(False)
         self.btncss.clicked.connect(self.export_style)
         self.btnconfig.clicked.connect(self.abrirConfig)
         self.aba_notas_fat = ABA_NOTAS_FAT(self)
@@ -111,6 +114,8 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.abaPRN.configurarPRN()
         self.abaRAZAO = ABA_RAZAO(self)
         self.abaRAZAO.configurarRAZAO()
+        self.abaDimob = ABA_DIMOB(self)
+        self.abaDimob.configurarDIMOB()
         self.config_tema()
 
 
@@ -208,7 +213,7 @@ class MainController(QMainWindow, Ui_MainWindow):
             self.txtinfoNota.setText('')
         else:
             conteudoo = self.txtinfoNota.toPlainText()
-            self.txtinfoNota.setText(f'{'#'*62}\n{conteudo}\n{conteudoo}')
+            self.txtinfoNota.setText(f'{"#"*62}\n{conteudo}\n{conteudoo}')
         QApplication.processEvents()
 
     def printPRN(self, conteudo):
@@ -232,7 +237,8 @@ class MainController(QMainWindow, Ui_MainWindow):
             self.btnNotas.setVisible(True)
             self.btnPRN.setVisible(True)
             self.btnRazao.setVisible(True)
-            #self.btnRateio.setVisible(True)
+            self.btnRateio.setVisible(False)
+            self.btnDimob.setVisible(True)
             
             self.btnVoltar.setVisible(False)
             botao.setVisible(False)
@@ -241,6 +247,7 @@ class MainController(QMainWindow, Ui_MainWindow):
             self.btnPRN.setVisible(False)
             self.btnRazao.setVisible(False)
             self.btnRateio.setVisible(False)
+            self.btnDimob.setVisible(False)
 
             self.btnVoltar.setVisible(True)
             botao.setVisible(True)
@@ -265,6 +272,10 @@ class MainController(QMainWindow, Ui_MainWindow):
                 options = QFileDialog.Options()
                 path, _ = QFileDialog.getOpenFileName(self, "Selecionar Arquivo TXT", "", "Arquivos TXT (*.txt)", options=options)
                 self.razao_arq.setText(path)
+            elif botao == 'dimob':
+                options = QFileDialog.Options()
+                path, _ = QFileDialog.getOpenFileName(self, "Selecionar Arquivo Excel", "", "Arquivos Excel (*.xlsx)", options=options)
+                self.textoDimobarq.setText(path)
         elif tipo == 'pasta':
             options = QFileDialog.Options()
             path = QFileDialog.getExistingDirectory(self, "Selecionar Pasta", "", options=options)
@@ -286,6 +297,9 @@ class MainController(QMainWindow, Ui_MainWindow):
             elif botao == 'notas':
                 self.localNotasSalvar.setText(path)
                 self.config['caminhoNotas'] = path
+            elif botao == 'dimob':
+                self.textoDimoblocal.setText(path)
+                self.config['caminhoDimob'] = path
             self.salvar_configuracoes(self.config)
         elif tipo == 'abrir':
             if botao == 'prn':
@@ -294,6 +308,8 @@ class MainController(QMainWindow, Ui_MainWindow):
                 caminho_da_pasta = self.razao_local.text()
             elif botao == 'notas':
                 caminho_da_pasta = self.localNotasSalvar.text()
+            elif botao == 'dimob':
+                caminho_da_pasta = self.textoDimoblocal.text()
             os.startfile(caminho_da_pasta)
 
 

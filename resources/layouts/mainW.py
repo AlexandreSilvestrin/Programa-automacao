@@ -97,7 +97,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setStyleSheet("")
         self.centralwidget.setObjectName("centralwidget")
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
-        self.stackedWidget.setGeometry(QtCore.QRect(10, 70, 1011, 821))
+        self.stackedWidget.setGeometry(QtCore.QRect(10, 70, 1011, 811))
         self.stackedWidget.setBaseSize(QtCore.QSize(1011, 821))
         self.stackedWidget.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.stackedWidget.setObjectName("stackedWidget")
@@ -346,6 +346,56 @@ class Ui_MainWindow(object):
         self.btncss.setStyleSheet("")
         self.btncss.setObjectName("btncss")
         self.stackedWidget.addWidget(self.pagRateio)
+        self.pagDimob = QtWidgets.QWidget()
+        self.pagDimob.setObjectName("pagDimob")
+        self.textoDimobarq = QtWidgets.QLineEdit(self.pagDimob)
+        self.textoDimobarq.setGeometry(QtCore.QRect(10, 120, 761, 41))
+        self.textoDimobarq.setStyleSheet("")
+        self.textoDimobarq.setObjectName("textoDimobarq")
+        self.btnDimobarq = QtWidgets.QPushButton(self.pagDimob)
+        self.btnDimobarq.setGeometry(QtCore.QRect(780, 120, 201, 41))
+        self.btnDimobarq.setStyleSheet("")
+        self.btnDimobarq.setObjectName("btnDimobarq")
+        self.btnDimoblocal = QtWidgets.QPushButton(self.pagDimob)
+        self.btnDimoblocal.setGeometry(QtCore.QRect(780, 230, 201, 41))
+        self.btnDimoblocal.setStyleSheet("")
+        self.btnDimoblocal.setObjectName("btnDimoblocal")
+        self.textoDimoblocal = QtWidgets.QLineEdit(self.pagDimob)
+        self.textoDimoblocal.setGeometry(QtCore.QRect(10, 230, 761, 41))
+        self.textoDimoblocal.setStyleSheet("")
+        self.textoDimoblocal.setObjectName("textoDimoblocal")
+        self.label_13 = QtWidgets.QLabel(self.pagDimob)
+        self.label_13.setGeometry(QtCore.QRect(20, 80, 761, 31))
+        self.label_13.setStyleSheet("")
+        self.label_13.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_13.setObjectName("label_13")
+        self.label_3 = QtWidgets.QLabel(self.pagDimob)
+        self.label_3.setGeometry(QtCore.QRect(10, 20, 991, 31))
+        self.label_3.setStyleSheet("font-size: 25px;")
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.label_14 = QtWidgets.QLabel(self.pagDimob)
+        self.label_14.setGeometry(QtCore.QRect(10, 190, 761, 31))
+        self.label_14.setStyleSheet("")
+        self.label_14.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_14.setObjectName("label_14")
+        self.txtinfoDimob = QtWidgets.QTextEdit(self.pagDimob)
+        self.txtinfoDimob.setGeometry(QtCore.QRect(10, 290, 761, 501))
+        self.txtinfoDimob.setStyleSheet("")
+        self.txtinfoDimob.setObjectName("txtinfoDimob")
+        self.btnDimobtransformar = QtWidgets.QPushButton(self.pagDimob)
+        self.btnDimobtransformar.setGeometry(QtCore.QRect(780, 750, 201, 41))
+        self.btnDimobtransformar.setStyleSheet("")
+        self.btnDimobtransformar.setObjectName("btnDimobtransformar")
+        self.btnAbrPastaDimob = QtWidgets.QPushButton(self.pagDimob)
+        self.btnAbrPastaDimob.setGeometry(QtCore.QRect(780, 690, 201, 41))
+        self.btnAbrPastaDimob.setStyleSheet("")
+        self.btnAbrPastaDimob.setObjectName("btnAbrPastaDimob")
+        self.btnAbrPastaDimob_2 = QtWidgets.QPushButton(self.pagDimob)
+        self.btnAbrPastaDimob_2.setGeometry(QtCore.QRect(780, 290, 121, 41))
+        self.btnAbrPastaDimob_2.setStyleSheet("")
+        self.btnAbrPastaDimob_2.setObjectName("btnAbrPastaDimob_2")
+        self.stackedWidget.addWidget(self.pagDimob)
         self.btnNotas = QtWidgets.QPushButton(self.centralwidget)
         self.btnNotas.setGeometry(QtCore.QRect(10, 10, 141, 51))
         self.btnNotas.setStyleSheet("QPushButton{\n"
@@ -420,8 +470,7 @@ class Ui_MainWindow(object):
 "}")
         self.btnRazao.setObjectName("btnRazao")
         self.btnRateio = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRateio.setEnabled(False)
-        self.btnRateio.setVisible(False)
+        self.btnRateio.setEnabled(True)
         self.btnRateio.setGeometry(QtCore.QRect(630, 10, 141, 51))
         self.btnRateio.setStyleSheet("QPushButton{\n"
 "border-radius: 10px;\n"
@@ -486,6 +535,31 @@ class Ui_MainWindow(object):
 "background-color: #8cff57;\n"
 "}")
         self.btnconfig.setObjectName("btnconfig")
+        self.btnDimob = QtWidgets.QPushButton(self.centralwidget)
+        self.btnDimob.setEnabled(True)
+        self.btnDimob.setGeometry(QtCore.QRect(460, 10, 141, 51))
+        self.btnDimob.setStyleSheet("QPushButton{\n"
+"border-radius: 10px;\n"
+"border-width:2px;\n"
+"background-color: qlineargradient(\n"
+"        spread:pad, \n"
+"        x1:0, y1:1, \n"
+"        x2:0, y2:0, \n"
+"        stop:0 #648ed1,\n"
+"        stop:0.35 #366096,   /* Azul escuro (rgb(7, 0, 235)) */\n"
+"        stop:1 #366096  /* Azul claro (rgb(0, 255, 255)) */\n"
+"    );\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"color: rgb(9, 9, 9);\n"
+"border-radius: 10px;\n"
+"border-width:2px;\n"
+"border-style:outset;\n"
+"border-color:black;\n"
+"background-color: #8cff57;\n"
+"}")
+        self.btnDimob.setObjectName("btnDimob")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -495,7 +569,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "XY-auto"))
-        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.5"))
+        self.label_5.setText(_translate("MainWindow", "PROGRAMA DE AUTOMACAO V1.6.6"))
         self.label_8.setText(_translate("MainWindow", "NOTAS+FATURAMENTO"))
         self.btnNotatransformar.setText(_translate("MainWindow", "GERAR NOTAS"))
         self.btnNotatransformar.setProperty("class", _translate("MainWindow", "botoes1"))
@@ -582,18 +656,23 @@ class Ui_MainWindow(object):
         self.label_razao2_2.setText(_translate("MainWindow", "numeros contras:"))
         self.btncss.setText(_translate("MainWindow", "EXPORTA CSS"))
         self.btncss.setProperty("class", _translate("MainWindow", "botoes1"))
+        self.btnDimobarq.setText(_translate("MainWindow", "SELECIONAR ARQ"))
+        self.btnDimobarq.setProperty("class", _translate("MainWindow", "botoes2"))
+        self.btnDimoblocal.setText(_translate("MainWindow", "SELECIONAR LOCAL"))
+        self.btnDimoblocal.setProperty("teste", _translate("MainWindow", "kk"))
+        self.btnDimoblocal.setProperty("class", _translate("MainWindow", "botoes2"))
+        self.label_13.setText(_translate("MainWindow", "SELECIONAR ARQUIVO/PASTA"))
+        self.label_3.setText(_translate("MainWindow", "Transformar DIMOB"))
+        self.label_14.setText(_translate("MainWindow", "LOCAL PARA SALVAR"))
+        self.btnDimobtransformar.setText(_translate("MainWindow", "TRANSFORMAR"))
+        self.btnDimobtransformar.setProperty("class", _translate("MainWindow", "botoes1"))
+        self.btnAbrPastaDimob.setText(_translate("MainWindow", "ABRIR PASTA"))
+        self.btnAbrPastaDimob.setProperty("class", _translate("MainWindow", "botoes1"))
+        self.btnAbrPastaDimob_2.setText(_translate("MainWindow", "EXPLICAÇÂO"))
+        self.btnAbrPastaDimob_2.setProperty("class", _translate("MainWindow", "botoes1"))
         self.btnNotas.setText(_translate("MainWindow", "NOTAS+FAT"))
         self.btnPRN.setText(_translate("MainWindow", "PRN"))
         self.btnRazao.setText(_translate("MainWindow", "RAZAO"))
         self.btnVoltar.setText(_translate("MainWindow", "VOLTAR"))
         self.btnconfig.setText(_translate("MainWindow", "CONFIG"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+        self.btnDimob.setText(_translate("MainWindow", "DIMOB"))

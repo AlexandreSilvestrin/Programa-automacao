@@ -103,7 +103,7 @@ border-radius:5px;
       <x>10</x>
       <y>70</y>
       <width>1011</width>
-      <height>821</height>
+      <height>811</height>
      </rect>
     </property>
     <property name="baseSize">
@@ -1083,6 +1083,202 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="pagDimob">
+     <widget class="QLineEdit" name="textoDimobarq">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>761</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDimobarq">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>120</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>SELECIONAR ARQ</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes2</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDimoblocal">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>230</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>SELECIONAR LOCAL</string>
+      </property>
+      <property name="teste" stdset="0">
+       <string>kk</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes2</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="textoDimoblocal">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>230</y>
+        <width>761</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>761</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>SELECIONAR ARQUIVO/PASTA</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>991</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-size: 25px;</string>
+      </property>
+      <property name="text">
+       <string>Transformar DIMOB</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>761</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>LOCAL PARA SALVAR</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="txtinfoDimob">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>290</y>
+        <width>761</width>
+        <height>501</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnDimobtransformar">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>750</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>TRANSFORMAR</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnAbrPastaDimob">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>690</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>ABRIR PASTA</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnAbrPastaDimob_2">
+      <property name="geometry">
+       <rect>
+        <x>780</x>
+        <y>290</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>EXPLICAÇÂO</string>
+      </property>
+      <property name="class" stdset="0">
+       <string>botoes1</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QPushButton" name="btnNotas">
     <property name="geometry">
@@ -1298,6 +1494,45 @@ background-color: #8cff57;
     </property>
     <property name="text">
      <string>CONFIG</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnDimob">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>10</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+border-radius: 10px;
+border-width:2px;
+background-color: qlineargradient(
+        spread:pad, 
+        x1:0, y1:1, 
+        x2:0, y2:0, 
+        stop:0 #648ed1,
+		stop:0.35 #366096,   /* Azul escuro (rgb(7, 0, 235)) */
+        stop:1 #366096  /* Azul claro (rgb(0, 255, 255)) */
+    );
+}
+
+QPushButton:hover{
+color: rgb(9, 9, 9);
+border-radius: 10px;
+border-width:2px;
+border-style:outset;
+border-color:black;
+background-color: #8cff57;
+}</string>
+    </property>
+    <property name="text">
+     <string>DIMOB</string>
     </property>
    </widget>
   </widget>
