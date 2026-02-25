@@ -4,17 +4,9 @@ import datetime
 from datetime import date
 
 def tratar_excel(file_path):
-    df = pd.read_excel(file_path, skiprows=2, header=None, dtype={2: str})
-
-    df = df.dropna(axis=1, how='all')
-    df.columns = 'codigo', 'razao social', 'cpf/cnpj', 'data contrato', 'data baixa', 'valor receb', 'receb bruto', 'investimentos','comissao','despesas', 'receb liquido'
-    df = df.copy()
+    df = pd.read_excel(file_path, dtype={2: str})
 
     # Transforma valores em decimal e arredonda para 2 casas decimais
-    df["valor receb"] = df["valor receb"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
-    df["receb bruto"] = df["receb bruto"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
-    df["investimentos"] = df["investimentos"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
-    df["despesas"] = df["despesas"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
     df["receb liquido"] = df["receb liquido"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
     df["comissao"] = 0
     df["imposto"] = 0
@@ -25,7 +17,7 @@ def tratar_excel(file_path):
     df["cpf/cnpj"] = df["cpf/cnpj"].str.replace(r'[./-]', '', regex=True)
     df['razao social'] = df['razao social'].apply(lambda x: str(x).strip())
     df["mes"] = df["data baixa"].dt.month
-    df = df[["codigo", "razao social", "cpf/cnpj", "data contrato", "mes", "valor receb", "receb bruto", "investimentos","comissao","despesas", "receb liquido", "imposto"]].groupby(["codigo", "razao social", "cpf/cnpj", "data contrato", "mes"], as_index=False).sum()
+    df = df[["codigo", "razao social", "cpf/cnpj", "data contrato", "mes", "comissao", "receb liquido", "imposto"]].groupby(["codigo", "razao social", "cpf/cnpj", "data contrato", "mes"], as_index=False).sum()
 
     df_pivot = df.pivot_table(
         index=["razao social","cpf/cnpj", "data contrato"],  # colunas que identificam a pessoa
@@ -207,7 +199,11 @@ def conversao_dimob(file_path, output_path):
         print(f"Arquivo convertido e salvo em: {nome}")
         return True, "Conversão realizada com sucesso" , nome
     except Exception as e:
-        return False, str(e)
+        import traceback 
+        traceback.print_exc()
+        print(f"Erro ao processar o arquivo: {e}")
+        return False, str(e), ''
 
 if __name__ == "__main__":
-    conversao_dimob(r'C:\Users\Alexandre\Documents\Programacao\Python\dimob\DIMOB NBB 2025- HENRIQUE.xlsx', r'C:\Users\Alexandre\Documents\Programacao\Python\dimob\dimob\DIMOB_2025.txt')
+    
+    a, e, nome = conversao_dimob(r"C:\Users\Alexandre\Downloads\DIMOB NBB 2025- HENRIQUE.xlsx", r"C:\Users\Alexandre\Desktop\Nova pasta\Nova pasta")

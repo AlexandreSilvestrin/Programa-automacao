@@ -1,1 +1,1 @@
-{'tema': 'escuro', 'fonte': 12, 'scale': 1, 'caminhoNotas': '', 'caminhoPRN': '', 'caminhoRazao': '', 'caminhoDimob': 'C:/Users/Alexandre/Desktop/Nova pasta/teste'}
+{'tema': 'escuro', 'fonte': 12, 'scale': 1, 'caminhoNotas': '', 'caminhoPRN': '', 'caminhoRazao': '', 'caminhoDimob': 'C:/Users/Alexandre/Desktop/Nova pasta/Nova pasta'}

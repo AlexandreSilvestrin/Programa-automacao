@@ -105,6 +105,7 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.btnRazao.clicked.connect(lambda: self.mostrar_pagina(3))
         self.btnRateio.clicked.connect(lambda: self.mostrar_pagina(4))
         self.btnDimob.clicked.connect(lambda: self.mostrar_pagina(5))
+        self.btnAbrPastaDimob_2.clicked.connect(lambda: self.mostrar_explicacao())
         self.btnRateio.setVisible(False)
         self.btncss.clicked.connect(self.export_style)
         self.btnconfig.clicked.connect(self.abrirConfig)
@@ -118,6 +119,28 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.abaDimob.configurarDIMOB()
         self.config_tema()
 
+
+    def mostrar_explicacao(self):
+        mensagem = (
+            "O arquivo Excel deve conter obrigatoriamente as seguintes colunas:\n\n"
+            "codigo\n"
+            "razao social\n"
+            "cpf/cnpj\n"
+            "data contrato\n"
+            "data baixa\n"
+            "receb liquido\n\n"
+            "ATENÇÃO:\n"
+            "- Todas as colunas devem estar em letras minúsculas.\n"
+            "- Os nomes devem estar escritos exatamente como acima.\n"
+            "- Devem estar na mesma ordem indicada.\n"
+            "- E o conteudo das linhas pode manter como estao"
+        )
+
+        QMessageBox.information(
+            self,
+            "Explicação do formato do Excel",
+            mensagem
+        )
 
     def abrirConfig(self):
         # Verifica se a janela de configurações já está aberta
