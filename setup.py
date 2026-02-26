@@ -14,7 +14,7 @@ build_exe_options = {
 
 setup(
     name="XY-auto",
-    version="1.6.6",
+    version="1.6.9",
     description="Programa de automacao // 11961594515 // https://github.com/AlexandreSilvestrin",
     options={"build_exe": build_exe_options},
     executables=executables

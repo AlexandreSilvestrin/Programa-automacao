@@ -6,13 +6,26 @@ from datetime import date
 def tratar_excel(file_path):
     df = pd.read_excel(file_path, dtype={2: str})
 
+    df['data baixa'] = pd.to_datetime(
+    df['data baixa'],
+    dayfirst=True,
+    errors='coerce'
+    )
+
+    df['data baixa'] = df['data baixa'].dt.normalize()
+
+    df['data contrato'] = pd.to_datetime(
+        df['data contrato'],
+        dayfirst=True,
+        errors='coerce'
+    )
+
+    df['data contrato'] = df['data contrato'].dt.normalize()
+
     # Transforma valores em decimal e arredonda para 2 casas decimais
     df["receb liquido"] = df["receb liquido"].apply(lambda x: Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
     df["comissao"] = 0
     df["imposto"] = 0
-
-    df['data contrato'] = pd.to_datetime(df['data contrato'], errors='coerce')
-    df['data baixa'] = pd.to_datetime(df['data baixa'], errors='coerce')
 
     df["cpf/cnpj"] = df["cpf/cnpj"].str.replace(r'[./-]', '', regex=True)
     df['razao social'] = df['razao social'].apply(lambda x: str(x).strip())
@@ -206,4 +219,4 @@ def conversao_dimob(file_path, output_path):
 
 if __name__ == "__main__":
     
-    a, e, nome = conversao_dimob(r"C:\Users\Alexandre\Downloads\DIMOB NBB 2025- HENRIQUE.xlsx", r"C:\Users\Alexandre\Desktop\Nova pasta\Nova pasta")
+    a, e, nome = conversao_dimob(r"C:\Users\Alexandre\Desktop\DIMOB NBB 2025- HENRIQUE.xlsx", r"C:\Users\Alexandre\Documents\Programacao\Python\dimob\dimob")
