@@ -1,105 +1,47 @@
-# **XY-auto v1.6.5**
+# XY-auto (Programa de Automação Contábil)
 
-Este é um projeto desenvolvido para uma empresa de contabilidade para automação e manipulação de dados, com interface gráfica amigável e suporte a várias funcionalidades, como leitura e conversão de arquivos.
+Um aplicativo desktop para contadores e escritórios contábeis que automatiza tarefas repetitivas de arquivos fiscais e relatórios. Ele tem interface gráfica e foi criado para facilitar a preparação de dados de notas fiscais, faturamento, geração de PRN e consulta de CNPJ.
 
----
+## O que o programa faz
 
-## **Estrutura do Projeto**
+- Lê arquivos de notas fiscais e documentos fiscais em PDF/TXT
+- Extrai e organiza dados para gerar relatórios em Excel
+- Gera arquivos PRN no formato exigido por clientes e sistemas fiscais
+- Consulta dados de CNPJ pela API (Receita WS)
+- Exibe opções em uma interface gráfica simples e fácil de usar
 
-A organização do projeto foi reformulada para melhorar a modularidade e a manutenção:
+## Como usar (rápido)
 
-```plaintext
-PROGRAMA_MVC/
-│
-├── .venv/             # Ambiente virtual do Python
-├── controllers/       # Controladores que gerenciam as interações entre interface e lógica
-│   ├── abas_main/
-│   │   ├── aba_notas_fat.py
-│   │   ├── aba_prn.py
-│   │   └── aba_razao.py
-│   ├── config_controller.py
-│   ├── main_controller.py
-│   ├── sec_controller.py
-│   └── ter_controller.py
-├── core/              # As funções de manipulação de arquivos
-│   ├── CNPJ_API.py
-│   ├── FATURAMENTO.py
-│   ├── NOTAS_entrada.py
-│   ├── NOTAS_pdf.py
-│   ├── NOTAS_tomados.py
-│   ├── NOTAS.py
-│   ├── PRN_T.py
-│   └── RAZAO_resumo.py
-├── models/            # Modelos de dados e manipulação de banco
-│   ├── banco_cnpj.py
-│   └── banco_fat.py
-├── resources/         # Recursos estáticos e arquivos auxiliares
-│   ├── config/        # Configurações do sistema
-│   │   ├── caminhos.py
-│   │   ├── config.txt
-│   │   ├── janela1.json
-│   │   ├── janela2.json
-│   │   └── janela3.json
-│   ├── data/          # Bases de dados e arquivos de suporte
-│   │   ├── BANCOCNPJ.xlsx
-│   │   └── GUIA_NOME.xlsx
-│   ├── icons/         # Ícones do programa
-│   │   └── XY.ico
-│   ├── layouts/       # Arquivos de layout e UI gerados
-│   │   ├── configW.py
-│   │   ├── mainW.py
-│   │   ├── secW.py
-│   │   └── tercW.py
-│   └── styles/        # Arquivos de estilo (CSS)
-│       ├── dark.css
-│       └── light.css
-├── app.py                # Arquivo principal do programa
-├── README.md             # Documentação do projeto
-├── requirements.txt      # Dependências do projeto
-└── setup.py              # Configuração para criar o executável
-```
+1. Abra `app.py` para iniciar o programa.
+2. Use a janela principal para carregar o arquivo fiscal (PDF, TXT, etc.).
+3. Selecione a operação desejada: gerar Excel, gerar PRN, consultar CNPJ.
+4. O programa processa e salva os resultados em pastas de saída.
 
-## **Principais Funcionalidades**
+## Por que este projeto ajuda
 
-- **Conversão de arquivos**: Leitura de arquivos PDF e TXT, com exportação para Excel.
-- **Criação de arquivos PRN**: Geração de arquivos PRN com regras específicas.
-- **Consulta de CNPJs**: Integração com a API Receita WS.
-- **Interface gráfica**: Interface intuitiva desenvolvida com PyQt5.
+- Reduz trabalho manual com planilhas e conversões
+- Evita erros de digitação com processamento automático
+- Torna mais rápido entregar arquivos prontos para clientes e obrigações fiscais
 
-## **Tecnologias Utilizadas**
+## Como rodar com UV
 
-- **Python**  
-- **Bibliotecas**: Pandas, PyQt5, Tabula-py ,Regex, PyPDF2, Requests, Openpyxl, CX_Freeze
+1. Instale o Python 3.12 (necessário para tabula).
+2. Instale o UV globalmente no seu Python:
+   ```powershell
+   pip install uv
+   ```
+3. No diretório do projeto, inicialize o UV (vai criar `.venv` e instalar dependências):
+   ```powershell
+   uv sync
+   ```
+4. Ative o ambiente virtual criado:
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+5. Execute o programa:
+   ```powershell
+   uv run app.py
+   ```
 
----
-<br>
-<br>
+> Se preferir, após `uv sync`, você também pode rodar diretamente com `python app.py` dentro do `.venv`.
 
-# **Documentação Técnica do Projeto**
-
-
-## **Estrutura do Projeto**
-Abaixo está uma explicação sobre as principais pastas e arquivos:
-
-### **Diretórios**
-- **`controllers/`**: Contém os controladores responsáveis por gerenciar a lógica da interface gráfica (PyQt5).  
-  - **`main_controller.py`**: Controlador da janela principal.  
-  - **`sec_controller.py`**: Controlador da janela de CNPJ_notas.  
-  - **`ter_controller.py`**: Controlador da janela CNPJ_fat. 
-- **`core/`**: Implementa as funções principais do sistema, como leitura de arquivos, geração de PRNs e integração com APIs.  
-  - **Exemplo**:  
-    - `NOTAS_entrada.py`: Processa notas fiscais de entrada.  
-    - `CNPJ_API.py`: Consulta dados de CNPJ via API Receita WS.  
-- **`models/`**: Gerencia a manipulação de dados e conexões com bases como Excel ou arquivos de configuração.  
-- **`resources/`**: Contém arquivos auxiliares como configurações, estilos (CSS), ícones e layouts da interface gráfica.  
-- **`app.py`**: Arquivo principal que inicializa o programa.  
-
----
-
-## **Instalação**
-
-### **Requisitos**
-- Python 3.10 ou superior.  
-- Instale as dependências listadas em `requirements.txt` com o comando:  
-  ```bash
-  pip install -r requirements.txt
