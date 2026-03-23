@@ -115,7 +115,7 @@ class RAZAO:
         def filtarNF(x):
             padrao = r"nf\s?(n.o)?(.)?(:)?(-)?\s?(\d+)"
             try:
-                return re.search(padrao, x.lower())[0].replace('nf', '').replace('n.o', '').replace('-', '').replace(':', '').replace('.', '').strip()
+                return re.search(padrao, x.lower())[0].replace('nfs', '').replace('nf', '').replace('n.o', '').replace('-', '').replace(':', '').replace('.', '').strip()
             except:
                 try:
                     padrao = r"ft\s?(n.o)?(:)?(-)?\s?(\d+)"
