@@ -1,5 +1,14 @@
 # XY-auto (Programa de Automação Contábil)
 
+> [!WARNING]
+> **Este projeto não recebe mais atualizações.**
+>
+> O desenvolvimento deste sistema foi continuado em uma nova versão, com arquitetura modernizada, interface desenvolvida em React e backend em Flask.
+>
+> A partir de agora, todas as melhorias e novas funcionalidades serão implementadas no repositório **XY_Task**.
+>
+> ➜ **Versão atual:** https://github.com/AlexandreSilvestrin/XY_TASK
+
 Um aplicativo desktop para contadores e escritórios contábeis que automatiza tarefas repetitivas de arquivos fiscais e relatórios. Ele tem interface gráfica e foi criado para facilitar a preparação de dados de notas fiscais, faturamento, geração de PRN e consulta de CNPJ.
 
 ## O que o programa faz
